@@ -1,11 +1,18 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
 
 .banner {
     background-image: url("./../../public/logo.svg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    min-height: 300px; /* Adjust based on your design needs */
+    min-height: 300px;
+    /* Adjust based on your design needs */
 }
 
 /* Optional: Add responsive background positioning */
@@ -24,6 +31,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.1); /* Light overlay if needed */
+    background: rgba(0, 0, 0, 0.1);
+    /* Light overlay if needed */
     pointer-events: none;
 }
