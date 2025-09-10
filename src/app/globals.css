@@ -35,3 +35,7 @@ body {
     /* Light overlay if needed */
     pointer-events: none;
 }
+
+.linear-gradient {
+    background: linear-gradient(305deg, #9F13FB 14.33%, #E95AFF 95.9%);
+}
