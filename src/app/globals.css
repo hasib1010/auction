@@ -1,26 +1,29 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+.banner {
+    background-image: url("./../../public/logo.svg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 300px; /* Adjust based on your design needs */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Optional: Add responsive background positioning */
+@media (max-width: 768px) {
+    .banner {
+        background-size: cover;
+        background-position: center top;
+    }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Optional: Ensure text readability over the background */
+.banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1); /* Light overlay if needed */
+    pointer-events: none;
 }
