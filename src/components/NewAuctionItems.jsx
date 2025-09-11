@@ -152,7 +152,7 @@ const AuctionItemsCarousel = () => {
 
   return (
     <div className="w-full bg-[#F2F0E9]  px-4 sm:px-6 lg:px-8 xl:px-[120px] py-10 lg:py-[120px]">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto mb-44">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 lg:mb-[120px] gap-4">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight">

@@ -8,7 +8,7 @@ const HeroCTASection = () => {
 
 
       <div className="  ">
-        <div className=" flex items-end ">
+        <div className=" flex flex-col md:flex-row items-center md:items-end ">
 
           {/* Left Content */}
           <div className="text-white px-20 py-20 ">
