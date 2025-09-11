@@ -85,7 +85,7 @@ const MainContentCards = () => {
           <div className="border-l border-gray-100 py-8 px-7 flex flex-col md:flex-row items-center">
             {/* Character Illustration */}
             <div className="flex flex-1 items-center justify-center bg-gray-100 px-9 py-12 rounded-4xl">
-              <img src="/pikachu copy 2 (1).png" alt="Pig Pikachu" className="w-full h-full object-contain" />
+              <img src="/pikachu.png" alt="Pig Pikachu" className="w-full h-full object-contain" />
             </div>
 
             {/* Content */}
