@@ -4,22 +4,22 @@ import { ShoppingCart, User, Search } from 'lucide-react';
 
 const Header = () => {
   return (
-    <div className="relative w-full h-40 overflow-hidden" 
-         style={{
-           backgroundImage: 'url("/logo.svg")',
-           backgroundSize: 'cover',
-           backgroundRepeat: 'no-repeat',
-           backgroundPosition: 'center'
-         }}>
-      
+    <div className="relative w-full h-96 overflow-hidden"
+      style={{
+        backgroundImage: 'url("/logo.svg")',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center'
+      }}>
+
       {/* Search bar overlay - positioned exactly as in design */}
-      <div className="absolute top-1/2 right-8 transform -translate-y-1/2 z-10">
-        <div className="flex items-center space-x-3">
-          
+      <div className=" flex flex-col py-10 items-center justify-end h-full w-full ">
+        <div className="flex items-center justify-between w-full px-10 space-x-3">
+
           {/* Search input with dropdown */}
           <div className="relative">
-            <input 
-              type="text" 
+            <input
+              type="text"
               placeholder="Search auctions"
               className="px-4 py-2.5 pr-24 rounded-full border-none bg-white shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-300 w-72 text-sm text-gray-700 placeholder-gray-500"
             />
@@ -34,7 +34,7 @@ const Header = () => {
               </button>
             </div>
           </div>
-          
+
           {/* User action buttons */}
           <div className="flex space-x-2">
             <button className="bg-white hover:bg-gray-50 rounded-full p-2.5 shadow-lg border border-gray-200 w-10 h-10 flex items-center justify-center transition-colors">
@@ -44,7 +44,7 @@ const Header = () => {
               <User className="w-5 h-5 text-gray-600" />
             </button>
           </div>
-          
+
         </div>
       </div>
     </div>
