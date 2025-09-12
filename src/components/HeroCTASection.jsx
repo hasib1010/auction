@@ -6,8 +6,6 @@ const HeroCTASection = () => {
     <section className="md:rounded-[32px] bg-[linear-gradient(305deg,#9F13FB_14.33%,#E95AFF_95.9%)] md:my-[80px] mx-auto">
       {/* Background decorative elements */}
 
-
-      <div className="  ">
         <div className=" flex flex-col md:flex-row items-center md:items-end ">
 
           {/* Left Content */}
@@ -40,11 +38,9 @@ const HeroCTASection = () => {
           {/* Right Content - Character Cards and Person */}
           <div className=" ">
             <img src="/image 69.png" alt="" />
-
           </div>
 
         </div>
-      </div>
     </section>
   );
 };
