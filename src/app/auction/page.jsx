@@ -8,7 +8,7 @@ export default function page() {
     <div className="min-h-screen bg-white">
         <Header />
         {/* Main Content */}
-        <div className='px-24 pt-20 pb-96'>
+        <div className='px-5 py-7 md:px-24 md:pt-20 md:pb-96'>
             <div className='mb-16'>
                 <h2 className='font-bold text-5xl'>Auction Lists</h2>
             </div>
