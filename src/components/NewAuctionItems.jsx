@@ -1,29 +1,101 @@
 'use client';
 
+import { useState, useCallback, memo } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { ChevronLeft, ChevronRight, Eye, Calendar } from 'lucide-react';
 
+// Memoized auction card component for better performance
+const AuctionCard = memo(({ item }) => (
+  <div className="px-1 sm:px-2 h-full">
+    <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-1 h-full transform hover:-translate-y-1">
+      {/* Image with lazy loading */}
+      <div className="aspect-square rounded-[14px] bg-gray-100 overflow-hidden">
+        <img
+          src={item.image}
+          alt={item.title}
+          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+          loading="lazy"
+          draggable={false}
+        />
+      </div>
+
+      {/* Content */}
+      <div className="p-2 sm:p-3 lg:p-4">
+        <h3 className="font-semibold text-gray-700 text-xs sm:text-sm lg:text-base xl:text-lg mb-2 line-clamp-2 leading-tight min-h-[2rem] sm:min-h-[2.5rem] lg:min-h-[3rem]">
+          {item.title}
+        </h3>
+
+        <div className="flex flex-col gap-2 mb-3">
+          <div className="flex flex-wrap items-center justify-between gap-1">
+            <span
+              className={`px-2 py-1 rounded-full text-xs font-medium w-fit transition-colors ${
+                item.status === 'Live'
+                  ? 'bg-red-50 text-red-600 border border-red-200'
+                  : 'bg-amber-50 text-amber-700 border border-amber-200'
+              }`}
+            >
+              {item.status}
+            </span>
+            <span className="text-xs text-gray-600 font-medium">
+              {item.endTime}
+            </span>
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center gap-1 sm:gap-2">
+          <button
+            className={`flex-1 py-2 px-2 sm:px-3 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 ${
+              item.status === 'Live'
+                ? 'bg-purple-600 text-white hover:bg-purple-700 hover:shadow-md active:scale-95'
+                : 'bg-gray-100 text-gray-500 cursor-not-allowed'
+            }`}
+            disabled={item.status !== 'Live'}
+          >
+            {item.status === 'Live' ? 'Bid Now' : 'Coming Soon'}
+          </button>
+          <button className="w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all duration-200 hover:scale-110">
+            <Eye size={12} className="sm:w-4 sm:h-4" />
+          </button>
+          <button className="w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all duration-200 hover:scale-110">
+            <Calendar size={12} className="sm:w-4 sm:h-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+));
+
+AuctionCard.displayName = 'AuctionCard';
+
 const AuctionItemsCarousel = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
   const auctionItems = [
-    { id: 1, title: "LEGO Super Heroes The Batcave 6860", image: "/Rectangle 662 (1).png", status: "Live", endTime: "17/5/2025, 2:00pm" },
-    { id: 2, title: "Dungeons & Dragons - Starter Set: Heroes of The...", image: "/Rectangle 662 (1).png", status: "Live", endTime: "17/5/2025, 2:00pm" },
-    { id: 3, title: "Marvel Super Hero Trainer - Interactive Fitness Toy for...", image: "/Rectangle 662 (3).png", status: "Upcoming", endTime: "17/5/2025, 2:00pm" },
-    { id: 4, title: "LEGO Super Heroes The Batcave 6860", image: "/Rectangle 662.png", status: "Live", endTime: "17/5/2025, 2:00pm" },
-    { id: 5, title: "Pokemon Trading Cards Collection", image: "/Rectangle 662.png", status: "Live", endTime: "18/5/2025, 3:00pm" },
-    { id: 6, title: "Vintage Action Figures Set", image: "/Rectangle 662.png", status: "Upcoming", endTime: "19/5/2025, 1:00pm" },
-    { id: 7, title: "Board Game Collection", image: "/Rectangle 662.png", status: "Live", endTime: "20/5/2025, 4:00pm" },
-    { id: 8, title: "Comic Books Bundle", image: "/Rectangle 662.png", status: "Upcoming", endTime: "21/5/2025, 2:30pm" }
+    { id: 1, title: "LEGO Super Heroes The Batcave 6860", image: "Rectangle 662.png", status: "Live", endTime: "17/5/2025, 2:00pm" },
+    { id: 2, title: "Dungeons & Dragons - Starter Set: Heroes of The...", image: "Rectangle 662 (3).png", status: "Live", endTime: "17/5/2025, 2:00pm" },
+    { id: 3, title: "Marvel Super Hero Trainer - Interactive Fitness Toy for...", image: "Rectangle 662 (1).png", status: "Upcoming", endTime: "17/5/2025, 2:00pm" },
+    { id: 4, title: "LEGO Super Heroes The Batcave 6860", image: "Rectangle 662.png", status: "Live", endTime: "17/5/2025, 2:00pm" },
+    { id: 5, title: "Pokemon Trading Cards Collection", image: "Rectangle 662 (2).png", status: "Live", endTime: "18/5/2025, 3:00pm" },
+    { id: 6, title: "Vintage Action Figures Set", image: "Rectangle 662.png", status: "Upcoming", endTime: "19/5/2025, 1:00pm" },
+    { id: 7, title: "Board Game Collection", image: "Rectangle 662.png", status: "Live", endTime: "20/5/2025, 4:00pm" },
+    { id: 8, title: "Comic Books Bundle", image: "Rectangle 662.png", status: "Upcoming", endTime: "21/5/2025, 2:30pm" }
   ];
 
-  // Responsive breakpoints for react-multi-carousel
+  // Optimized responsive breakpoints
   const responsive = {
     superLargeDesktop: {
-      breakpoint: { max: 4000, min: 1024 },
+      breakpoint: { max: 4000, min: 1440 },
       items: 4,
-      slidesToSlide: 1
+      slidesToSlide: 2
     },
     desktop: {
+      breakpoint: { max: 1440, min: 1024 },
+      items: 4,
+      slidesToSlide: 2
+    },
+    laptop: {
       breakpoint: { max: 1024, min: 768 },
       items: 3,
       slidesToSlide: 1
@@ -34,131 +106,87 @@ const AuctionItemsCarousel = () => {
       slidesToSlide: 1
     },
     mobile: {
-      breakpoint: { max: 640, min: 0 },
+      breakpoint: { max: 640, min: 480 },
+      items: 2,
+      slidesToSlide: 1
+    },
+    smallMobile: {
+      breakpoint: { max: 480, min: 0 },
       items: 1,
       slidesToSlide: 1
     }
   };
 
-  // Custom arrow components
-  const CustomLeftArrow = ({ onClick, ...rest }) => {
-    const { onMove, carouselState: { currentSlide, deviceType } } = rest;
+  // Memoized custom arrow components
+  const CustomLeftArrow = memo(({ onClick, ...rest }) => {
+    const { carouselState: { currentSlide } } = rest;
     return (
       <button
-        onClick={() => onClick()}
+        onClick={onClick}
         disabled={currentSlide === 0}
-        className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-10 sm:h-10 rounded-full shadow-lg flex items-center justify-center transition-all -translate-x-4 sm:-translate-x-5 ${currentSlide === 0
-          ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-          : 'bg-white text-gray-600 hover:bg-gray-50 hover:shadow-xl'
-          }`}
+        className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full shadow-md flex items-center justify-center transition-all duration-200 -translate-x-3 sm:-translate-x-4 lg:-translate-x-5 ${
+          currentSlide === 0
+            ? 'bg-gray-200 text-gray-400 cursor-not-allowed opacity-50'
+            : 'bg-white text-gray-600 hover:bg-gray-50 hover:shadow-lg hover:scale-105 active:scale-95'
+        }`}
+        aria-label="Previous items"
       >
-        <ChevronLeft size={16} className="sm:w-5 sm:h-5" />
+        <ChevronLeft size={16} className="sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
       </button>
     );
-  };
+  });
 
-  const CustomRightArrow = ({ onClick, ...rest }) => {
-    const { onMove, carouselState: { currentSlide, totalItems, deviceType } } = rest;
+  const CustomRightArrow = memo(({ onClick, ...rest }) => {
+    const { carouselState: { currentSlide, totalItems, deviceType } } = rest;
     const itemsToShow = responsive[deviceType]?.items || 4;
     const isAtEnd = currentSlide >= totalItems - itemsToShow;
 
     return (
       <button
-        onClick={() => onClick()}
+        onClick={onClick}
         disabled={isAtEnd}
-        className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-10 sm:h-10 rounded-full shadow-lg flex items-center justify-center transition-all translate-x-4 sm:translate-x-5 ${isAtEnd
-          ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-          : 'bg-white text-gray-600 hover:bg-gray-50 hover:shadow-xl'
-          }`}
+        className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full shadow-md flex items-center justify-center transition-all duration-200 translate-x-3 sm:translate-x-4 lg:translate-x-5 ${
+          isAtEnd
+            ? 'bg-gray-200 text-gray-400 cursor-not-allowed opacity-50'
+            : 'bg-white text-gray-600 hover:bg-gray-50 hover:shadow-lg hover:scale-105 active:scale-95'
+        }`}
+        aria-label="Next items"
       >
-        <ChevronRight size={16} className="sm:w-5 sm:h-5" />
+        <ChevronRight size={16} className="sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
       </button>
     );
-  };
+  });
 
-  // Custom dots component
-  // const CustomDot = ({ onClick, active, index, carouselState }) => {
-  //   return (
-  //     <button
-  //       onClick={() => onClick()}
-  //       className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 mx-1 ${active
-  //         ? 'bg-purple-600 w-6 sm:w-8'
-  //         : 'bg-gray-300 hover:bg-gray-400 w-1.5 sm:w-2'
-  //         }`}
-  //     />
-  //   );
-  // };
+  CustomLeftArrow.displayName = 'CustomLeftArrow';
+  CustomRightArrow.displayName = 'CustomRightArrow';
 
-  const AuctionCard = ({ item }) => (
-    <div className="px-2 h-full">
-      <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow p-1 h-full">
-        {/* Image */}
-        <div className="aspect-square rounded-[14px] bg-[#F7F7F7] overflow-hidden">
-          <img
-            src={item.image}
-            alt={item.title}
-            className="w-full h-full object-cover"
-            draggable={false}
-          />
-        </div>
+  // Memoized view more button
+  const ViewMoreButton = memo(() => (
+    <button className="flex items-center gap-2 px-4 sm:px-6 lg:px-8 py-2 sm:py-3 lg:py-4 border border-purple-600 rounded-full hover:bg-purple-50 transition-all duration-200 hover:shadow-md active:scale-95 shrink-0">
+      <span className="font-semibold text-sm sm:text-base lg:text-lg text-purple-600">View More</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 24 25" fill="none" className="sm:w-5 sm:h-5 lg:w-6 lg:h-6 transition-transform group-hover:translate-x-1">
+        <path d="M17.0306 12.804L9.53055 20.304C9.46087 20.3737 9.37815 20.4289 9.2871 20.4667C9.19606 20.5044 9.09847 20.5238 8.99993 20.5238C8.90138 20.5238 8.8038 20.5044 8.71276 20.4667C8.62171 20.4289 8.53899 20.3737 8.4693 20.304C8.39962 20.2343 8.34435 20.1516 8.30663 20.0605C8.26892 19.9695 8.24951 19.8719 8.24951 19.7734C8.24951 19.6748 8.26892 19.5772 8.30663 19.4862C8.34435 19.3952 8.39962 19.3124 8.4693 19.2427L15.4396 12.2734L8.4693 5.30399C8.32857 5.16326 8.24951 4.97239 8.24951 4.77337C8.24951 4.57434 8.32857 4.38347 8.4693 4.24274C8.61003 4.10201 8.80091 4.02295 8.99993 4.02295C9.19895 4.02295 9.38982 4.10201 9.53055 4.24274L17.0306 11.7427C17.1003 11.8124 17.1556 11.8951 17.1933 11.9862C17.2311 12.0772 17.2505 12.1748 17.2505 12.2734C17.2505 12.3719 17.2311 12.4695 17.1933 12.5606C17.1556 12.6516 17.1003 12.7343 17.0306 12.804Z" fill="#9F13FB" />
+      </svg>
+    </button>
+  ));
 
-        {/* Content */}
-        <div className="p-3 sm:p-4">
-          <h3 className="font-semibold text-[#4D4D4D] text-sm sm:text-base lg:text-lg xl:text-xl mb-2 sm:mb-3 line-clamp-2 leading-tight min-h-[2.5rem] sm:min-h-[3rem]">
-            {item.title}
-          </h3>
+  ViewMoreButton.displayName = 'ViewMoreButton';
 
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3 sm:mb-4 gap-2">
-            <span
-              className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium w-fit ${item.status === 'Live'
-                ? 'bg-[#F6484B12] text-[#FF4848]'
-                : 'bg-[#F7F3E4] text-[#4D4D4D] border-[#E8DAA7] border'
-                }`}
-            >
-              {item.status}
-            </span>
-            <span className="text-xs sm:text-sm text-[#1C1724B2] font-medium">
-              {item.endTime}
-            </span>
-          </div>
-
-          {/* Actions */}
-          <div className="flex items-center gap-2">
-            <button
-              className={`flex-1 py-2 sm:py-2.5 px-3 sm:px-4 rounded-lg text-xs sm:text-sm font-semibold transition-all ${item.status === 'Live'
-                ? 'bg-purple-600 text-white hover:bg-purple-700 hover:shadow-md'
-                : 'bg-gray-100 text-gray-500 cursor-not-allowed'
-                }`}
-              disabled={item.status !== 'Live'}
-            >
-              {item.status === 'Live' ? 'Bid Now' : 'Coming Soon'}
-            </button>
-            <button className="w-7 h-7 sm:w-9 sm:h-9 flex items-center justify-center text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors">
-              <Eye size={14} className="sm:w-4 sm:h-4" />
-            </button>
-            <button className="w-7 h-7 sm:w-9 sm:h-9 flex items-center justify-center text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors">
-              <Calendar size={14} className="sm:w-4 sm:h-4" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  const handleBeforeChange = useCallback((nextSlide) => {
+    setCurrentSlide(nextSlide);
+  }, []);
 
   return (
-    <div className="w-full bg-[#F2F0E9] px-4 sm:px-6 lg:px-8 xl:px-[120px] py-10 lg:py-[120px]">
-      <div className="max-w-7xl mx-auto md:mb-44">
+    <div className="w-full bg-gradient-to-br from-orange-50 to-amber-50 px-3 sm:px-4 lg:px-8 xl:px-16 2xl:px-32 py-8 sm:py-12 lg:py-16 xl:py-20">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between text-center md:text-start mb-10 lg:mb-[120px] gap-4">
-          <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900">
+        <div className="flex flex-col sm:flex-row justify-between items-center text-center sm:text-left mb-8 sm:mb-12 lg:mb-16 gap-4 sm:gap-6">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 leading-tight">
             New Auction Items
           </h2>
-          <button className=" hidden md:flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 border border-[#9F13FB] rounded-full hover:bg-purple-200 transition-colors shrink-0">
-            <span className="font-semibold text-base sm:text-lg text-[#9F13FB]">View More</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 24 25" fill="none" className="sm:w-6 sm:h-6">
-              <path d="M17.0306 12.804L9.53055 20.304C9.46087 20.3737 9.37815 20.4289 9.2871 20.4667C9.19606 20.5044 9.09847 20.5238 8.99993 20.5238C8.90138 20.5238 8.8038 20.5044 8.71276 20.4667C8.62171 20.4289 8.53899 20.3737 8.4693 20.304C8.39962 20.2343 8.34435 20.1516 8.30663 20.0605C8.26892 19.9695 8.24951 19.8719 8.24951 19.7734C8.24951 19.6748 8.26892 19.5772 8.30663 19.4862C8.34435 19.3952 8.39962 19.3124 8.4693 19.2427L15.4396 12.2734L8.4693 5.30399C8.32857 5.16326 8.24951 4.97239 8.24951 4.77337C8.24951 4.57434 8.32857 4.38347 8.4693 4.24274C8.61003 4.10201 8.80091 4.02295 8.99993 4.02295C9.19895 4.02295 9.38982 4.10201 9.53055 4.24274L17.0306 11.7427C17.1003 11.8124 17.1556 11.8951 17.1933 11.9862C17.2311 12.0772 17.2505 12.1748 17.2505 12.2734C17.2505 12.3719 17.2311 12.4695 17.1933 12.5606C17.1556 12.6516 17.1003 12.7343 17.0306 12.804Z" fill="#9F13FB" />
-            </svg>
-          </button>
+          <div className="hidden md:block">
+            <ViewMoreButton />
+          </div>
         </div>
 
         {/* Carousel Container */}
@@ -168,46 +196,38 @@ const AuctionItemsCarousel = () => {
             infinite={false}
             customLeftArrow={<CustomLeftArrow />}
             customRightArrow={<CustomRightArrow />}
-            // showDots={true}
-            // customDot={<CustomDot />}
-            // dotListClass="flex justify-center gap-1.5 sm:gap-2 mt-6 sm:mt-8"
-            itemClass="carousel-item-padding-40-px"
-            containerClass="mx-6 sm:mx-8"
-            sliderClass="gap-2 sm:gap-3 lg:gap-4"
+            beforeChange={handleBeforeChange}
+            itemClass="px-0"
+            containerClass="mx-4 sm:mx-6 lg:mx-8"
             removeArrowOnDeviceType={[]}
             swipeable={true}
             draggable={true}
             keyBoardControl={true}
-            customTransition="transform 300ms ease-in-out"
-            transitionDuration={300}
+            customTransition="transform 250ms ease-out"
+            transitionDuration={250}
             renderButtonGroupOutside={false}
-            // renderDotsOutside={false}
+            partialVisible={false}
+            centerMode={false}
+            shouldResetAutoplay={false}
+            rewind={false}
+            rewindWithAnimation={false}
           >
             {auctionItems.map((item) => (
               <AuctionCard key={item.id} item={item} />
             ))}
           </Carousel>
         </div>
-        <div className='md:hidden mt-7 flex justify-center'>
-          <button className="flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 border border-[#9F13FB] rounded-full hover:bg-purple-200 transition-colors shrink-0">
-            <span className="font-semibold text-base sm:text-lg text-[#9F13FB]">View More</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 24 25" fill="none" className="sm:w-6 sm:h-6">
-              <path d="M17.0306 12.804L9.53055 20.304C9.46087 20.3737 9.37815 20.4289 9.2871 20.4667C9.19606 20.5044 9.09847 20.5238 8.99993 20.5238C8.90138 20.5238 8.8038 20.5044 8.71276 20.4667C8.62171 20.4289 8.53899 20.3737 8.4693 20.304C8.39962 20.2343 8.34435 20.1516 8.30663 20.0605C8.26892 19.9695 8.24951 19.8719 8.24951 19.7734C8.24951 19.6748 8.26892 19.5772 8.30663 19.4862C8.34435 19.3952 8.39962 19.3124 8.4693 19.2427L15.4396 12.2734L8.4693 5.30399C8.32857 5.16326 8.24951 4.97239 8.24951 4.77337C8.24951 4.57434 8.32857 4.38347 8.4693 4.24274C8.61003 4.10201 8.80091 4.02295 8.99993 4.02295C9.19895 4.02295 9.38982 4.10201 9.53055 4.24274L17.0306 11.7427C17.1003 11.8124 17.1556 11.8951 17.1933 11.9862C17.2311 12.0772 17.2505 12.1748 17.2505 12.2734C17.2505 12.3719 17.2311 12.4695 17.1933 12.5606C17.1556 12.6516 17.1003 12.7343 17.0306 12.804Z" fill="#9F13FB" />
-            </svg>
-          </button>
+
+        {/* Mobile View More Button */}
+        <div className="md:hidden mt-6 flex justify-center">
+          <ViewMoreButton />
         </div>
       </div>
 
-      {/* Custom CSS to override default styles */}
+      {/* Optimized CSS with better performance */}
       <style jsx global>{`
         .auction-carousel {
-          margin: 0 1.5rem;
-        }
-        
-        @media (min-width: 640px) {
-          .auction-carousel {
-            margin: 0 2rem;
-          }
+          will-change: transform;
         }
         
         .auction-carousel .react-multi-carousel-list {
@@ -216,58 +236,80 @@ const AuctionItemsCarousel = () => {
         }
         
         .auction-carousel .react-multi-carousel-track {
-          gap: 0.5rem;
+          display: flex !important;
+          gap: 0.25rem;
+          will-change: transform;
         }
         
         @media (min-width: 640px) {
           .auction-carousel .react-multi-carousel-track {
-            gap: 0.75rem;
+            gap: 0.5rem;
           }
         }
         
         @media (min-width: 1024px) {
           .auction-carousel .react-multi-carousel-track {
-            gap: 1rem;
+            gap: 0.75rem;
           }
         }
         
         .auction-carousel .react-multi-carousel-item {
           display: flex !important;
-        }
-        
-        .auction-carousel .react-multi-carousel-dot-list {
-          position: static !important;
-          bottom: auto !important;
-          padding: 0 !important;
-          margin: 0 !important;
-        }
-        
-        .auction-carousel .react-multi-carousel-dot {
-          border: none !important;
-          background: transparent !important;
-          padding: 0 !important;
-          margin: 0 !important;
+          height: 100% !important;
         }
         
         .auction-carousel .react-multiple-carousel__arrow {
-          z-index: 1000 !important;
+          z-index: 20 !important;
+          position: absolute !important;
         }
         
         .auction-carousel .react-multiple-carousel__arrow--left {
-          left: -2rem !important;
+          left: -1rem !important;
         }
         
         .auction-carousel .react-multiple-carousel__arrow--right {
-          right: -2rem !important;
+          right: -1rem !important;
         }
         
         @media (min-width: 640px) {
           .auction-carousel .react-multiple-carousel__arrow--left {
-            left: -2.5rem !important;
+            left: -1.5rem !important;
           }
           
           .auction-carousel .react-multiple-carousel__arrow--right {
-            right: -2.5rem !important;
+            right: -1.5rem !important;
+          }
+        }
+        
+        @media (min-width: 1024px) {
+          .auction-carousel .react-multiple-carousel__arrow--left {
+            left: -2rem !important;
+          }
+          
+          .auction-carousel .react-multiple-carousel__arrow--right {
+            right: -2rem !important;
+          }
+        }
+
+        /* Performance optimizations */
+        .auction-carousel * {
+          -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+          -webkit-perspective: 1000px;
+          perspective: 1000px;
+        }
+        
+        .auction-carousel img {
+          transform: translateZ(0);
+          will-change: transform;
+        }
+        
+        /* Reduce motion for users who prefer it */
+        @media (prefers-reduced-motion: reduce) {
+          .auction-carousel * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
           }
         }
       `}</style>
