@@ -6,10 +6,10 @@ const HeroCTASection = () => {
     <section className="md:rounded-[32px] bg-[linear-gradient(305deg,#9F13FB_14.33%,#E95AFF_95.9%)] md:my-[80px] mx-auto">
       {/* Background decorative elements */}
 
-        <div className=" flex flex-col md:flex-row items-center md:items-end ">
+        <div className=" flex flex-col md:flex-row items-center md:items-end pt-10">
 
           {/* Left Content */}
-          <div className="text-white px-20 py-20 items-center md:items-start text-center md:text-left">
+          <div className="text-white md:px-20 px-3  items-center md:items-start text-center md:text-left">
             <div className="inline-block mb-6">
               <span className="rounded-[140px] border border-[rgba(255,255,255,0.5)] bg-[rgba(255,255,255,0.25)] px-[18px] py-2">
                 Listing Invitations
@@ -25,7 +25,7 @@ const HeroCTASection = () => {
               </p>
             </div>
 
-            <div>
+            <div className="flex justify-center md:justify-start">
               <button className=" flex items-center space-x-2  border text-white font-semibold px-6 py-3 rounded-full shadow-lg transition-colors">
                 <span>Request to list</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
@@ -36,9 +36,9 @@ const HeroCTASection = () => {
           </div>
 
           {/* Right Content - Character Cards and Person */}
-          <div className=" ">
-            <img src="/image 69.png" alt="" />
-          </div>
+          
+            <img className='-mb-4' src="/image 69.png" alt="" />
+        
 
         </div>
     </section>

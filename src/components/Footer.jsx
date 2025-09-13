@@ -4,7 +4,7 @@ import HeroCTASection from "@/components/HeroCTASection";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#0E0E0E] text-white md:py-16">
+    <footer className="bg-[#0E0E0E] text-white py-16">
       <div className="max-w-7xl mx-auto px-8">
         {/* relative component */}
         <div className="hidden md:block mt-0 md:-mt-96">

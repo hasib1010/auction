@@ -4,6 +4,7 @@ import { useState, useCallback, memo } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { ChevronLeft, ChevronRight, Eye, Calendar } from 'lucide-react';
+import Link from 'next/link';
 
 // Memoized auction card component for better performance
 const AuctionCard = memo(({ item }) => (
@@ -29,11 +30,10 @@ const AuctionCard = memo(({ item }) => (
         <div className="flex flex-col gap-2 mb-3">
           <div className="flex flex-wrap items-center justify-between gap-1">
             <span
-              className={`px-2 py-1 rounded-full text-xs font-medium w-fit transition-colors ${
-                item.status === 'Live'
+              className={`px-2 py-1 rounded-full text-xs font-medium w-fit transition-colors ${item.status === 'Live'
                   ? 'bg-red-50 text-red-600 border border-red-200'
                   : 'bg-amber-50 text-amber-700 border border-amber-200'
-              }`}
+                }`}
             >
               {item.status}
             </span>
@@ -46,11 +46,10 @@ const AuctionCard = memo(({ item }) => (
         {/* Actions */}
         <div className="flex items-center gap-1 sm:gap-2">
           <button
-            className={`flex-1 py-2 px-2 sm:px-3 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 ${
-              item.status === 'Live'
+            className={`flex-1 py-2 px-2 sm:px-3 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 ${item.status === 'Live'
                 ? 'bg-purple-600 text-white hover:bg-purple-700 hover:shadow-md active:scale-95'
                 : 'bg-gray-100 text-gray-500 cursor-not-allowed'
-            }`}
+              }`}
             disabled={item.status !== 'Live'}
           >
             {item.status === 'Live' ? 'Bid Now' : 'Coming Soon'}
@@ -124,11 +123,10 @@ const AuctionItemsCarousel = () => {
       <button
         onClick={onClick}
         disabled={currentSlide === 0}
-        className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full shadow-md flex items-center justify-center transition-all duration-200 -translate-x-3 sm:-translate-x-4 lg:-translate-x-5 ${
-          currentSlide === 0
+        className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full shadow-md flex items-center justify-center transition-all duration-200 -translate-x-3 sm:-translate-x-4 lg:-translate-x-5 ${currentSlide === 0
             ? 'bg-gray-200 text-gray-400 cursor-not-allowed opacity-50'
             : 'bg-white text-gray-600 hover:bg-gray-50 hover:shadow-lg hover:scale-105 active:scale-95'
-        }`}
+          }`}
         aria-label="Previous items"
       >
         <ChevronLeft size={16} className="sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
@@ -145,11 +143,10 @@ const AuctionItemsCarousel = () => {
       <button
         onClick={onClick}
         disabled={isAtEnd}
-        className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full shadow-md flex items-center justify-center transition-all duration-200 translate-x-3 sm:translate-x-4 lg:translate-x-5 ${
-          isAtEnd
+        className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full shadow-md flex items-center justify-center transition-all duration-200 translate-x-3 sm:translate-x-4 lg:translate-x-5 ${isAtEnd
             ? 'bg-gray-200 text-gray-400 cursor-not-allowed opacity-50'
             : 'bg-white text-gray-600 hover:bg-gray-50 hover:shadow-lg hover:scale-105 active:scale-95'
-        }`}
+          }`}
         aria-label="Next items"
       >
         <ChevronRight size={16} className="sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
@@ -162,12 +159,14 @@ const AuctionItemsCarousel = () => {
 
   // Memoized view more button
   const ViewMoreButton = memo(() => (
-    <button className="flex items-center gap-2 px-4 sm:px-6 lg:px-8 py-2 sm:py-3 lg:py-4 border border-purple-600 rounded-full hover:bg-purple-50 transition-all duration-200 hover:shadow-md active:scale-95 shrink-0">
-      <span className="font-semibold text-sm sm:text-base lg:text-lg text-purple-600">View More</span>
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 24 25" fill="none" className="sm:w-5 sm:h-5 lg:w-6 lg:h-6 transition-transform group-hover:translate-x-1">
-        <path d="M17.0306 12.804L9.53055 20.304C9.46087 20.3737 9.37815 20.4289 9.2871 20.4667C9.19606 20.5044 9.09847 20.5238 8.99993 20.5238C8.90138 20.5238 8.8038 20.5044 8.71276 20.4667C8.62171 20.4289 8.53899 20.3737 8.4693 20.304C8.39962 20.2343 8.34435 20.1516 8.30663 20.0605C8.26892 19.9695 8.24951 19.8719 8.24951 19.7734C8.24951 19.6748 8.26892 19.5772 8.30663 19.4862C8.34435 19.3952 8.39962 19.3124 8.4693 19.2427L15.4396 12.2734L8.4693 5.30399C8.32857 5.16326 8.24951 4.97239 8.24951 4.77337C8.24951 4.57434 8.32857 4.38347 8.4693 4.24274C8.61003 4.10201 8.80091 4.02295 8.99993 4.02295C9.19895 4.02295 9.38982 4.10201 9.53055 4.24274L17.0306 11.7427C17.1003 11.8124 17.1556 11.8951 17.1933 11.9862C17.2311 12.0772 17.2505 12.1748 17.2505 12.2734C17.2505 12.3719 17.2311 12.4695 17.1933 12.5606C17.1556 12.6516 17.1003 12.7343 17.0306 12.804Z" fill="#9F13FB" />
-      </svg>
-    </button>
+    <Link href={"/auction"} className="group">
+      <button className="flex items-center gap-2 px-4 mb-10 sm:px-6 lg:px-8 py-2 sm:py-3 lg:py-4 border border-purple-600 rounded-full hover:bg-purple-50 transition-all duration-200 hover:shadow-md active:scale-95 shrink-0">
+        <span className="font-semibold text-sm sm:text-base lg:text-lg text-purple-600">View More</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 24 25" fill="none" className="sm:w-5 sm:h-5 lg:w-6 lg:h-6 transition-transform group-hover:translate-x-1">
+          <path d="M17.0306 12.804L9.53055 20.304C9.46087 20.3737 9.37815 20.4289 9.2871 20.4667C9.19606 20.5044 9.09847 20.5238 8.99993 20.5238C8.90138 20.5238 8.8038 20.5044 8.71276 20.4667C8.62171 20.4289 8.53899 20.3737 8.4693 20.304C8.39962 20.2343 8.34435 20.1516 8.30663 20.0605C8.26892 19.9695 8.24951 19.8719 8.24951 19.7734C8.24951 19.6748 8.26892 19.5772 8.30663 19.4862C8.34435 19.3952 8.39962 19.3124 8.4693 19.2427L15.4396 12.2734L8.4693 5.30399C8.32857 5.16326 8.24951 4.97239 8.24951 4.77337C8.24951 4.57434 8.32857 4.38347 8.4693 4.24274C8.61003 4.10201 8.80091 4.02295 8.99993 4.02295C9.19895 4.02295 9.38982 4.10201 9.53055 4.24274L17.0306 11.7427C17.1003 11.8124 17.1556 11.8951 17.1933 11.9862C17.2311 12.0772 17.2505 12.1748 17.2505 12.2734C17.2505 12.3719 17.2311 12.4695 17.1933 12.5606C17.1556 12.6516 17.1003 12.7343 17.0306 12.804Z" fill="#9F13FB" />
+        </svg>
+      </button>
+    </Link>
   ));
 
   ViewMoreButton.displayName = 'ViewMoreButton';
@@ -177,7 +176,7 @@ const AuctionItemsCarousel = () => {
   }, []);
 
   return (
-    <div className="w-full bg-gradient-to-br from-orange-50 to-amber-50 px-3 sm:px-4 lg:px-8 xl:px-16 2xl:px-32 py-8 sm:py-12 lg:py-16 xl:py-20">
+    <div className="w-full bg-gradient-to-br from-orange-50 to-amber-50 pb-0 py-10 md:pb-80 ">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-center text-center sm:text-left mb-8 sm:mb-12 lg:mb-16 gap-4 sm:gap-6">
