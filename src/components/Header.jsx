@@ -16,7 +16,7 @@ const Header = () => {
         <img src="/logo.svg" className='w-full h-auto object-cover' alt="logo backgroundImage" />
         
         {/* Desktop layout - hidden on mobile */}
-        <div className="hidden lg:flex flex-col py-10 pb-1 items-center justify-end h-full w-full absolute bottom-0">
+        <div className="hidden lg:flex flex-col py-10 pb-1 md:pb-6 items-center justify-end h-full w-full absolute bottom-0">
           <div className="flex items-center justify-between w-full px-10 space-x-3">
 
             {/* Search input with dropdown */}
