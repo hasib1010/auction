@@ -1,12 +1,36 @@
 'use client';
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
 export default function FilterComponent() {
+
+    const [keyword, setKeyword] = useState("");
+    const [country, setCountry] = useState("United Kingdom");
+    const [category, setCategory] = useState("");
+    const [selectedAuctionStatus, setSelectedAuctionStatus] = useState("");
+    const [auctionHouse, setAuctionHouse] = useState("");
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+    const [range, setRange] = useState([20, 80]);
+
+    useEffect(() => {
+        const filterData = {
+            searchKeyword: keyword,
+            location: country,
+            category: category,
+            auctionStatus: selectedAuctionStatus,
+            auctionHouse: auctionHouse,
+            dateRange: { startDate, endDate },
+            range: range
+        };
+
+        console.log("Selected Filters:", filterData);
+    }, [keyword, country, category, selectedAuctionStatus, auctionHouse, startDate, endDate, range]);
+
 
     const countries = [
         // Europe
@@ -35,17 +59,7 @@ export default function FilterComponent() {
         { label: "Brighton Auction House", count: 456 },
         { label: "Self Esteem Auction House", count: 687 }
     ]
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
 
-    const [selected, setSelected] = useState({});
-    const handleCheckboxChange = (label) => {
-        setSelected(prev => ({
-            ...prev,
-            [label]: !prev[label]
-        }));
-    };
-    const [range, setRange] = useState([20, 80]);
 
     const handleChange = (newRange) => {
         setRange(newRange);
@@ -66,6 +80,8 @@ export default function FilterComponent() {
             <div className='relative my-5'>
                 <input
                     type="text"
+                    value={keyword}
+                    onChange={e => setKeyword(e.target.value)}
                     placeholder="Search auction name, lot or keywords"
                     className="w-full px-4 py-3.5 rounded-lg border-[1px] border-[#E3E3E3] bg-[#F7F7F7] focus:outline-none focus:ring-2 focus:ring-purple-300 text-sm text-gray-700 placeholder-[#9F9F9F]"
                 />
@@ -84,7 +100,7 @@ export default function FilterComponent() {
                     </svg>
                 </div>
                 <div className='relative mt-3'>
-                    <select name="countries" id="countrySelect" className="w-full px-4 py-3.5 rounded-lg border-[1px] border-[#E3E3E3] bg-[#F7F7F7] focus:outline-none focus:ring-2 focus:ring-purple-300 text-sm text-[#4D4D4D] appearance-none">
+                    <select value={country} onChange={e => setCountry(e.target.value)} className="w-full px-4 py-3.5 rounded-lg border-[1px] border-[#E3E3E3] bg-[#F7F7F7] focus:outline-none focus:ring-2 focus:ring-purple-300 text-sm text-[#4D4D4D] appearance-none">
                         {countries.map((country) => (
                             <option key={country} value={country} className='pr-4'>
                                 {country}
@@ -108,6 +124,8 @@ export default function FilterComponent() {
                 <div className='relative'>
                     <input
                         type="text"
+                        value={category}
+                        onChange={e => setCategory(e.target.value)}
                         placeholder="Search Categories"
                         className="w-full px-4 py-3.5 rounded-lg border-[1px] border-[#E3E3E3] bg-[#F7F7F7] focus:outline-none focus:ring-2 focus:ring-purple-300 text-sm text-gray-700 placeholder-[#9F9F9F]"
                     />
@@ -117,7 +135,7 @@ export default function FilterComponent() {
                         </svg>
                     </div>
                 </div>
-                <div className="flex flex-col gap-2 mt-4">
+                <div className="flex flex-col gap-2 mt-4" value={category} onChange={e => setCategory(e.target.value)}>
                     {options.map(({ label, count }) => (
                         <label key={label} className="flex items-center gap-2 cursor-pointer">
                             <input
@@ -206,59 +224,28 @@ export default function FilterComponent() {
                         <path d="M5.74201 9.04188C5.89669 8.88738 6.10638 8.8006 6.32501 8.8006C6.54363 8.8006 6.75332 8.88738 6.90801 9.04188L11 13.1339L15.092 9.04188C15.1675 8.96082 15.2586 8.89581 15.3598 8.85072C15.461 8.80563 15.5703 8.78138 15.681 8.77943C15.7918 8.77747 15.9018 8.79785 16.0046 8.83934C16.1073 8.88083 16.2006 8.94259 16.2789 9.02093C16.3573 9.09927 16.419 9.19259 16.4605 9.29532C16.502 9.39805 16.5224 9.50808 16.5205 9.61885C16.5185 9.72962 16.4943 9.83887 16.4492 9.94007C16.4041 10.0413 16.3391 10.1323 16.258 10.2079L11.583 14.8829C11.4283 15.0374 11.2186 15.1242 11 15.1242C10.7814 15.1242 10.5717 15.0374 10.417 14.8829L5.74201 10.2079C5.58751 10.0532 5.50073 9.8435 5.50073 9.62488C5.50073 9.40625 5.58751 9.19656 5.74201 9.04188Z" fill="#0E0E0E" />
                     </svg>
                 </div>
-                <div>
+                <div className="flex flex-col gap-2 mt-4" value={selectedAuctionStatus} onChange={e => setSelectedAuctionStatus(e.target.value)} >
                     {auctionStatus.map(({ label, count }) => (
-                        <label
-                            key={label}
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                cursor: "pointer",
-                                marginBottom: "8px",
-                            }}
-                        >
+                        <label key={label} className="flex items-center gap-2 cursor-pointer">
                             <input
-                                type="checkbox"
-                                checked={!!selected[label]}
-                                onChange={() => handleCheckboxChange(label)}
-                                style={{ display: "none" }}
-                                id={`chk-${label}`}
+                                type="radio"
+                                name="auctionStatus"
+                                value={label}
+                                className="sr-only peer"
                             />
-                            {/* Custom checkbox */}
-                            <span
-                                style={{
-                                    width: "20px",
-                                    height: "20px",
-                                    border: "2px solid #ccc",
-                                    borderRadius: "4px",
-                                    marginRight: "12px",
-                                    backgroundColor: selected[label] ? "#9F13FB" : "white",
-                                    display: "inline-block",
-                                    position: "relative",
-                                }}
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="18"
+                                height="18"
+                                viewBox="0 0 18 18"
+                                fill="none"
+                                stroke="#9F9F9F"
+                                strokeWidth="1.25"
+                                className="peer-checked:fill-purple-600"
                             >
-                                {/* Checkmark */}
-                                {selected[label] && (
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="white"
-                                        strokeWidth="3"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        style={{
-                                            position: "absolute",
-                                            top: "2px",
-                                            left: "4px",
-                                            width: "12px",
-                                            height: "12px",
-                                        }}
-                                    >
-                                        <polyline points="20 6 9 17 4 12" />
-                                    </svg>
-                                )}
-                            </span>
-                            <span>
+                                <path d="M1.875 9C1.875 5.64124 1.875 3.96187 2.91843 2.91843C3.96187 1.875 5.64124 1.875 9 1.875C12.3587 1.875 14.0381 1.875 15.0816 2.91843C16.125 3.96187 16.125 5.64124 16.125 9C16.125 12.3587 16.125 14.0381 15.0816 15.0816C14.0381 16.125 12.3587 16.125 9 16.125C5.64124 16.125 3.96187 16.125 2.91843 15.0816C1.875 14.0381 1.875 12.3587 1.875 9Z" />
+                            </svg>
+                            <span className="text-sm text-[#0E0E0E]">
                                 {label} ({count})
                             </span>
                         </label>
@@ -277,6 +264,8 @@ export default function FilterComponent() {
                     <input
                         type="text"
                         placeholder="Search auction houses"
+                        value={auctionHouse}
+                        onChange={e => setAuctionHouse(e.target.value)}
                         className="w-full px-4 py-3.5 rounded-lg border-[1px] border-[#E3E3E3] bg-[#F7F7F7] focus:outline-none focus:ring-2 focus:ring-purple-300 text-sm text-gray-700 placeholder-[#9F9F9F]"
                     />
                     <div className="absolute top-4 left-[340px] md:left-[270px]">
@@ -285,12 +274,12 @@ export default function FilterComponent() {
                         </svg>
                     </div>
                 </div>
-                <div className="flex flex-col gap-2 mt-4">
+                <div className="flex flex-col gap-2 mt-4" value={auctionHouse} onChange={e => setAuctionHouse(e.target.value)}>
                     {auctionHouses.map(({ label, count }) => (
                         <label key={label} className="flex items-center gap-2 cursor-pointer">
                             <input
                                 type="radio"
-                                name="category"
+                                name="house"
                                 value={label}
                                 className="sr-only peer"
                             />
