@@ -2,6 +2,7 @@
 // components/Header.js
 import React, { useState } from 'react';
 import { ShoppingCart, User, Search, Menu, X } from 'lucide-react';
+import Link from 'next/link';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,7 +15,7 @@ const Header = () => {
     <div className="relative h-full w-full overflow-hidden">
       <div className="relative">
         <img src="/logo.svg" className='w-full h-auto object-cover' alt="logo backgroundImage" />
-        
+
         {/* Desktop layout - hidden on mobile */}
         <div className="hidden lg:flex flex-col py-10 pb-1 md:pb-6 items-center justify-end h-full w-full absolute bottom-0">
           <div className="flex items-center justify-between w-full px-10 space-x-3">
@@ -43,9 +44,11 @@ const Header = () => {
               <button className="bg-white hover:bg-gray-50 rounded-full p-2.5 shadow-lg border border-gray-200 w-10 h-10 flex items-center justify-center transition-colors">
                 <ShoppingCart className="w-5 h-5 text-gray-600" />
               </button>
-              <button className="bg-white hover:bg-gray-50 rounded-full p-2.5 shadow-lg border border-gray-200 w-10 h-10 flex items-center justify-center transition-colors">
-                <User className="w-5 h-5 text-gray-600" />
-              </button>
+              <Link href="/login">
+                <button className="bg-white hover:bg-gray-50 rounded-full p-2.5 shadow-lg border border-gray-200 w-10 h-10 flex items-center justify-center transition-colors">
+                  <User className="w-5 h-5 text-gray-600" />
+                </button>
+              </Link>
             </div>
 
           </div>
@@ -68,7 +71,7 @@ const Header = () => {
         {/* Mobile menu overlay */}
         {isMenuOpen && (
           <div className="lg:hidden fixed inset-0 bg-black/45 bg-opacity-50 z-40" onClick={toggleMenu}>
-            <div 
+            <div
               className="absolute top-0 right-0 h-full w-80 bg-white shadow-lg transform transition-transform duration-300 ease-in-out"
               onClick={(e) => e.stopPropagation()}
             >
