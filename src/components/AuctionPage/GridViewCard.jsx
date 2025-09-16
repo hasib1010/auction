@@ -4,6 +4,11 @@ import React, { useState } from 'react'
 export default function GridViewCard() {
     const [bidAmount, setBidAmount] = useState('');
 
+    const bid = (amount) => {
+        console.log(amount);
+        setBidAmount('');
+    };
+
     return (
         <div className='border border-[#E3E3E3] rounded-[20px] p-[6px] max-w-52 flex flex-col mx-auto justify-center gap-2.5 group'>
             <div className='bg-[#f7f7f7] rounded-[14px] relative'>
@@ -17,7 +22,8 @@ export default function GridViewCard() {
                             placeholder="Enter your bid"
                             className='flex-1 px-2 py-2 text-sm rounded-full border border-[#9F13FB] bg-white focus:outline-0 relative'
                         />
-                        <button className='px-5 text-white py-1 rounded-full bg-gradient-to-br from-[#E95AFF] to-[#9F13FB] absolute top-3 right-1'>
+                        <button className='px-5 text-white py-1 rounded-full bg-gradient-to-br from-[#E95AFF] to-[#9F13FB] absolute top-3 right-1'
+                            onClick={() => bid(bidAmount)}>
                             Bid
                         </button>
                     </div>

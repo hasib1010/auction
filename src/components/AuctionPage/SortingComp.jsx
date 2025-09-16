@@ -6,6 +6,8 @@ export default function SortingComp() {
 
     const [sort, setSort] = useState("");
     const [value, setValue] = useState("");
+    const [isLive, setIsLive] = useState(false);
+
     useEffect(() => {
         const filterData = {
             sort: sort,
@@ -28,8 +30,22 @@ export default function SortingComp() {
             <div className='flex gap-5 items-center'>
                 <h2>530 auctions</h2>
                 <div className='flex gap-2 items-center'>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-toggle-right-icon lucide-toggle-right"><circle cx="15" cy="12" r="3" /><rect width="20" height="14" x="2" y="5" rx="7" /></svg>
-                    <h2>Now Live</h2>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                        <input 
+                            type="checkbox" 
+                            className="sr-only peer" 
+                            checked={isLive}
+                            onChange={() => setIsLive(!isLive)}
+                        />
+                        <div className="w-11 h-6 bg-gray-200 rounded-full peer 
+                            peer-checked:after:translate-x-full peer-checked:after:border-white 
+                            after:content-[''] after:absolute after:top-0.5 after:left-[2px] 
+                            after:bg-white after:border-gray-300 after:border after:rounded-full 
+                            after:h-5 after:w-5 after:transition-all 
+                            peer-checked:bg-[#9f13fb]">
+                        </div>
+                    </label>
+                    <h2 className={isLive ? 'text-[#0E0E0E]' : ''}>Now Live</h2>
                 </div>
             </div>
             <div className='flex gap-4'>
