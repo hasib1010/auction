@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 export default function ProductCard() {
@@ -46,8 +47,10 @@ export default function ProductCard() {
             </div>
             <div className='p-5'>
                 <div className='flex gap-4 md:flex-col'>
-                    <button className='py-2 px-5 border bg-gradient-to-bl from-[#9F13FB] to-[#E95AFF] text-white rounded-full'>View Auction</button>
-                    <button className='py-2 px-5 border border-[#9F13FB] text-[#9F13FB] rounded-full'>Consign with Us</button>
+                    <Link href="/details">
+                        <button className='py-2 w-full px-5 border bg-gradient-to-bl from-[#9F13FB] to-[#E95AFF] text-white rounded-full'>View Auction</button>
+                    </Link>
+                    <button className='py-2 px-5 w-full border border-[#9F13FB] text-[#9F13FB] rounded-full'>Consign with Us</button>
                 </div>
             </div>
         </div>
