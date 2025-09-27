@@ -18,7 +18,9 @@ export default function page() {
             <div className='mt-9'>
                 {/* pagination */}
                 <PagePath items={pageWithPath} />
-                <div></div>
+                <div>
+                    
+                </div>
 
             </div>
             {/* Products information */}
