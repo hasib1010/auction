@@ -23,7 +23,9 @@ export default function page() {
         <div className='px-5 md:px-0 md:mt-48 space-y-4 md:space-y-8'>
           <Sort />
           <ProductCard />
-          <GridCard />
+          <ProductCard />
+          <ProductCard />
+          
         </div>
       </div>
       <Footer />
