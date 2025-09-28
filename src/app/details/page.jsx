@@ -22,8 +22,8 @@ export default function page() {
                 {/* image and details */}
                 <div className='grid grid-cols-[540px_1fr] gap-8 mt-16 max-w-7xl mx-auto'>
                     {/* image */}
-                    <div className='bg-[#f7f7f7] rounded-xl max-w-full object-contain flex justify-center items-center'>
-                        <img src="/Rectangle 662.png" alt="Product image" />
+                    <div className='bg-[#f7f7f7] rounded-xl flex justify-center items-center'>
+                        <img src="/Rectangle 662.png" alt="Product image" className='object-contain w-full' />
                     </div>
                     {/* details */}
                     <div className='border border-[#E3E3E3] rounded-[10px] p-6 space-y-8'>
