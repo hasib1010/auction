@@ -2,6 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 
 export default function ProductCard() {
+    const id = "auction123"; // Example auction ID
     return (
         <div className='rounded-[20px] p-2 hover:shadow-lg transition-shadow border border-[#E3E3E3] grid grid-cols-1 md:grid-cols-[240px_1fr_240px]'>
             <div className='bg-[#f7f7f7] rounded-[14px] flex flex-col justify-center items-center'>
@@ -47,7 +48,7 @@ export default function ProductCard() {
             </div>
             <div className='p-5'>
                 <div className='flex gap-4 md:flex-col'>
-                    <Link href="/details">
+                    <Link href={`/auction/${id}/details`}>
                         <button className='py-2 w-full px-5 border bg-gradient-to-bl from-[#9F13FB] to-[#E95AFF] text-white rounded-full'>View Auction</button>
                     </Link>
                     <button className='py-2 px-5 w-full border border-[#9F13FB] text-[#9F13FB] rounded-full'>Consign with Us</button>
