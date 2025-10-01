@@ -1,12 +1,13 @@
-"use client";
+'use client';
 
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import React from 'react'
 import { motion } from 'framer-motion'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation';
 
 function Store() {
+    const router = useRouter();
     return (
         <div className=" min-h-screen flex flex-col bg-gradient-to-b from-yellow-50 to-yellow-100">
             <Header />
@@ -48,11 +49,12 @@ function Store() {
                         Notify Me
                     </button>
 
-                    <Link href="/" passHref>
-                        <button className="rounded-2xl bg-gray-700 text-white py-2 px-5 shadow-md cursor-pointer hover:bg-gray-500 transition">
-                            Return Home
-                        </button>
-                    </Link>
+                    <button
+                        onClick={() => router.push('/')}
+                        className="rounded-2xl bg-gray-700 text-white py-2 px-5 shadow-md cursor-pointer hover:bg-gray-500 transition">
+                        Return Home
+                    </button>
+
                 </div>
             </main>
 
