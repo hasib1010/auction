@@ -49,9 +49,9 @@ export default function ProductCard() {
             <div className='p-5'>
                 <div className='flex gap-4 md:flex-col'>
                     <Link href={`/auction/${id}/details`}>
-                        <button className='py-2 w-full px-5 border bg-gradient-to-bl from-[#9F13FB] to-[#E95AFF] text-white rounded-full'>View Auction</button>
+                        <div className='text-center py-2 w-full px-5 border bg-gradient-to-bl from-[#9F13FB] to-[#E95AFF] text-white rounded-full'>View Auction</div>
                     </Link>
-                    <button className='py-2 px-5 w-full border border-[#9F13FB] text-[#9F13FB] rounded-full'>Consign with Us</button>
+                    <div className='text-center py-2 px-5 w-full border border-[#9F13FB] text-[#9F13FB] rounded-full'>Consign with Us</div>
                 </div>
             </div>
         </div>

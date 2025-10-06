@@ -1,4 +1,3 @@
-// pages/index.js or app/page.js (depending on your Next.js version)
 import Header from "@/components/Header";
 import MainContentCards from "@/components/MainContentCards";
 import ComingSoonSection from "@/components/ComingSoonSection";
@@ -8,7 +7,7 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       <Header />
       <MainContentCards />
       <ComingSoonSection />
