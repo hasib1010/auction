@@ -98,7 +98,9 @@ export default function ProductCard({ item }) {
                     <Link href={`/auction/${lotNumber}/details`}>
                         <div className='text-center py-2 w-full px-5 border bg-gradient-to-bl from-[#9F13FB] to-[#E95AFF] text-white rounded-full'>View Auction</div>
                     </Link>
-                    <div className='text-center py-2 px-5 w-full border border-[#9F13FB] text-[#9F13FB] rounded-full'>Consign with Us</div>
+                    <Link href={`/auction/${lotNumber}/bid`}>
+                        <div className='text-center py-2 px-5 w-full border border-[#9F13FB] text-[#9F13FB] rounded-full'>Consign with Us</div>
+                    </Link>
                     <div>
                         {tags && tags.map((tag, index) => (
                             <span key={index} className="inline-block bg-[#F7F7F7] text-[#0E0E0E] text-xs font-medium mr-2 mb-2 px-3 py-1 rounded-full">

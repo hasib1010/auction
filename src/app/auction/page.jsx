@@ -59,7 +59,7 @@ export default function Page() {
 
           {/* Pagination Controls */}
           {data && (
-            <div className="flex justify-end items-center gap-4 mt-8">
+            <div className="flex justify-center md:justify-end items-center gap-4 mt-8">
               <button
                 onClick={handlePrev}
                 disabled={currentPage === 1}

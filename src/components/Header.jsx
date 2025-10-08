@@ -50,13 +50,13 @@ const Header = () => {
 
                 {/* User action buttons */}
                 <div className="flex space-x-4 items-center">
-                  <button onClick={() => router.push('/login')} className='text-[#0E0E0E] text-[16px] font-semibold'>
+                  <button onClick={() => router.push('/login')} className='text-[#0E0E0E] text-[16px] font-semibold cursor-pointer'>
                     Login
                   </button>
-                  <button onClick={() => router.push('/signup')} className='text-white text-[16px] font-semibold px-6 py-3 rounded-full bg-[#0E0E0E]'>
+                  <button onClick={() => router.push('/signup')} className='text-white text-[16px] font-semibold px-6 py-3 rounded-full bg-[#0E0E0E] cursor-pointer'>
                     Sign Up
                   </button>
-                  <button className="bg-white hover:bg-gray-50 rounded-full p-2.5 shadow-lg border border-gray-200 w-10 h-10 flex items-center justify-center transition-colors">
+                  <button className="bg-white hover:bg-gray-50 rounded-full p-2.5 shadow-lg border border-gray-200 w-10 h-10 flex items-center justify-center transition-colors cursor-pointer">
                     <ShoppingCart className="w-5 h-5 text-gray-600" />
                   </button>
                 </div>

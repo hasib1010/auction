@@ -1,4 +1,5 @@
 // components/Footer.js
+import Link from 'next/link';
 import React from 'react';
 // import HeroCTASection from "@/components/HeroCTASection";
 
@@ -13,8 +14,10 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Logo and Copyright */}
           <div className="md:col-span-1">
-            <div className="mb-1 md:mb-8 w-32">
-              <img src="/logo.png" alt="Site logo" />
+            <div className="mb-1 md:mb-8 w-32 cursor-pointer">
+              <Link href="/">
+                <img src="/logo.png" alt="Site logo" />
+              </Link>
             </div>
             <p className="text-sm leading-relaxed hidden md:block">
               Copyright © 2025 Super Media Bros | All Rights Reserved
