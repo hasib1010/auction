@@ -1,7 +1,8 @@
 'use client'
 import React, { useState } from 'react'
 
-export default function GridViewCard() {
+export default function GridViewCard({ item }) {
+    const { lotNumber, title, openingBid, biddingEnds } = item;
     const [bidAmount, setBidAmount] = useState('');
 
     const bid = (amount) => {
@@ -31,16 +32,16 @@ export default function GridViewCard() {
             </div>
             <div className='px-4 pb-5'>
                 <h4 className='text-[#4D4D4D] text-sm font-medium mb-4'>
-                    Lot 2D
+                    {`Lot ${lotNumber}`}
                 </h4>
                 <h2 className='text-[#0E0E0E] text-xl font-bold mb-4 text-ellipsis overflow-hidden [display:-webkit-box] [-webkit-line-clamp:2] [-webkit-box-orient:vertical]'>
-                    Round 2.34t Diamond, H Color, VS2 Clarity, IGI Certified
+                    {title}
                 </h2>
                 <h3 className='text-[#6E6E6E] text-sm font-medium'>
-                    Opening Bid: <span className='text-[#0E0E0E] font-bold ml-1'>$ 1600</span>
+                    Opening Bid: <span className='text-[#0E0E0E] font-bold ml-1'>${openingBid}</span>
                 </h3>
                 <h3 className='text-[#6E6E6E] text-sm font-medium'>
-                    Bidding Ends: <span className='text-[#0E0E0E] font-bold ml-1'>25/08/25</span>
+                    Bidding Ends: <span className='text-[#0E0E0E] font-bold ml-1'>{biddingEnds}</span>
                 </h3>
             </div>
         </div>

@@ -1,12 +1,12 @@
 import Link from 'next/link'
 import React from 'react'
 
-export default function ProductCard() {
-    const id = "auction123"; // Example auction ID
+export default function ProductCard({ item }) {
+    const { lotNumber, biddingEnds, title, auctioneerLocation, category, currentBid, auctioneerEstimate, additionalFees, imagePath, imageAlt, productDetails } = item;
     return (
         <div className='rounded-[20px] p-2 hover:shadow-lg transition-shadow border border-[#E3E3E3] grid grid-cols-1 md:grid-cols-[240px_1fr_240px]'>
             <div className='bg-[#f7f7f7] rounded-[14px] flex flex-col justify-center items-center'>
-                <img src="/Rectangle 662.png" alt="Product image" />
+                <img src={imagePath} alt={imageAlt} />
             </div>
             <div className='m-5 pb-4 md:pb-0 border-b md:border-b-0 border-[#E3E3E3] md:border-r'>
                 {/* status and timestamp */}
@@ -24,17 +24,17 @@ export default function ProductCard() {
                             </svg>
                         </div>
                         <div className='font-bold text-sm'>
-                            <h2>Wed,  6th Aug 2025,  10:00AM</h2>
+                            <h2>{biddingEnds}</h2>
                         </div>
                     </div>
                 </div>
                 {/* product title and description */}
                 <div className='space-y-4 mt-6'>
                     <div className='font-bold text-xl text-[#0E0E0E] text-ellipsis overflow-hidden [display:-webkit-box] [-webkit-line-clamp:2] [-webkit-box-orient:vertical]'>
-                        <h2>Two Day Sale of Antiques & Collectables including a Collection of Amber - Tuesday 5th & Wednesday 6th August</h2>
+                        <h2>{title}</h2>
                     </div>
                     <div className='text-[18px] text-[#4D4D4D] font-medium'>
-                        <h4>Potteries Auctions</h4>
+                        <h4>{category} Auctions</h4>
                     </div>
                     <div className='flex gap-1 items-center text-[16px] text-[#4D4D4D] font-medium'>
                         <div className='p-2 rounded-full bg-[#F7F7F7]'>
@@ -42,13 +42,13 @@ export default function ProductCard() {
                                 <path d="M12.625 16.5H8.76094C9.41004 15.9204 10.0222 15.3007 10.5938 14.6445C12.7383 12.1781 13.875 9.57812 13.875 7.125C13.875 5.30164 13.1507 3.55295 11.8614 2.26364C10.572 0.974328 8.82336 0.25 7 0.25C5.17664 0.25 3.42795 0.974328 2.13864 2.26364C0.849328 3.55295 0.125 5.30164 0.125 7.125C0.125 9.57812 1.25859 12.1781 3.40625 14.6445C3.97782 15.3007 4.58996 15.9204 5.23906 16.5H1.375C1.20924 16.5 1.05027 16.5658 0.933058 16.6831C0.815848 16.8003 0.75 16.9592 0.75 17.125C0.75 17.2908 0.815848 17.4497 0.933058 17.5669C1.05027 17.6842 1.20924 17.75 1.375 17.75H12.625C12.7908 17.75 12.9497 17.6842 13.0669 17.5669C13.1842 17.4497 13.25 17.2908 13.25 17.125C13.25 16.9592 13.1842 16.8003 13.0669 16.6831C12.9497 16.5658 12.7908 16.5 12.625 16.5ZM7 4.625C7.49445 4.625 7.9778 4.77162 8.38893 5.04633C8.80005 5.32103 9.12048 5.71148 9.3097 6.16829C9.49892 6.62511 9.54843 7.12777 9.45196 7.61273C9.3555 8.09768 9.1174 8.54314 8.76777 8.89277C8.41814 9.2424 7.97268 9.4805 7.48773 9.57696C7.00277 9.67343 6.50011 9.62392 6.04329 9.4347C5.58648 9.24548 5.19603 8.92505 4.92133 8.51393C4.64662 8.1028 4.5 7.61945 4.5 7.125C4.5 6.46196 4.76339 5.82607 5.23223 5.35723C5.70107 4.88839 6.33696 4.625 7 4.625Z" fill="#4D4D4D" />
                             </svg>
                         </div>
-                        <h4>Brighthon, United Kingdom</h4>
+                        <h4>{auctioneerLocation}</h4>
                     </div>
                 </div>
             </div>
             <div className='p-5'>
                 <div className='flex gap-4 md:flex-col'>
-                    <Link href={`/auction/${id}/details`}>
+                    <Link href={`/auction/${lotNumber}/details`}>
                         <div className='text-center py-2 w-full px-5 border bg-gradient-to-bl from-[#9F13FB] to-[#E95AFF] text-white rounded-full'>View Auction</div>
                     </Link>
                     <div className='text-center py-2 px-5 w-full border border-[#9F13FB] text-[#9F13FB] rounded-full'>Consign with Us</div>

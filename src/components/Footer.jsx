@@ -14,8 +14,8 @@ const Footer = () => {
 
           {/* Logo and Copyright */}
           <div className="md:col-span-1">
-            <div className="mb-1 md:mb-8 w-full">
-              <img src="/logo-footer.png" alt="Site logo" />
+            <div className="mb-1 md:mb-8 w-32">
+              <img src="/logo.png" alt="Site logo" />
             </div>
             <p className="text-sm leading-relaxed hidden md:block">
               Copyright © 2025 Super Media Bros | All Rights Reserved

@@ -1,11 +1,27 @@
-import React from 'react'
+'use client';
+import React, { use, useEffect, useState } from 'react'
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PagePath from '@/components/PagePath';
 import GridViewCard from '@/components/AuctionPage/GridViewCard';
 
 
-export default function page() {
+export default function page({ params }) {
+
+    const { id } = use(params);
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        fetch('/data.json')
+            .then((res) => res.json())
+            .then((json) => {
+                setData(json);
+            })
+            .catch((err) => console.error('Error loading data.json:', err));
+    }, []);
+    const auction = data ? data.find((item) => item.lotNumber.toString() === id) : null;
+    const { lotNumber, biddingEnds, title, auctioneerLocation, category, currentBid, auctioneerEstimate, additionalFees, imagePath, imageAlt, productDetails } = auction || {};
+
     const pageWithPath = [
         { label: 'Home', href: '/' },
         { label: 'Auction lists', href: '/auction' },
@@ -23,7 +39,7 @@ export default function page() {
                 <div className='grid grid-cols-[540px_1fr] gap-8 mt-16 max-w-7xl mx-auto'>
                     {/* image */}
                     <div className='bg-[#f7f7f7] rounded-xl flex justify-center items-center'>
-                        <img src="/Rectangle 662.png" alt="Product image" className='object-contain w-full' />
+                        <img src={imagePath} alt={imageAlt} className='object-contain w-full' />
                     </div>
                     {/* details */}
                     <div className='border border-[#E3E3E3] rounded-[10px] p-6 space-y-8'>
@@ -62,15 +78,15 @@ export default function page() {
 
                         </div>
                         <div className='flex gap-5 items-center'>
-                            <div className='px-5 py-1 rounded-full border text-lg'>Lot 1A</div>
+                            <div className='px-5 py-1 rounded-full border text-lg'>{`Lot ${lotNumber}`}</div>
                             <div className='flex text-[16px]'>
                                 <h4 className='text-[#6E6E6E]'>Bidding Ends: &nbsp;</h4>
-                                <h4 className='font-bold'>25/08/25</h4>
+                                <h4 className='font-bold'>{biddingEnds}</h4>
                             </div>
                         </div>
                         <div>
                             <h2 className='text-4xl text-[#0E0E0E] font-bold'>
-                                Round 2.34t Diamond, H Color, VS2 Clarity, IGI Certified
+                                {title}
                             </h2>
                         </div>
                         <div className='flex gap-8'>
@@ -83,19 +99,19 @@ export default function page() {
                             </div>
                             <div className='text-[#6E6E6E]'>
                                 <h2>Current Bid:&nbsp;
-                                    <span className='text-[#0E0E0E]'>£ 1600</span>
+                                    <span className='text-[#0E0E0E]'>£ {currentBid?.amount ?? 0}</span>
                                     &nbsp;&nbsp;
-                                    <span className='text-[#0E0E0E] underline'>4 bids</span>
+                                    <span className='text-[#0E0E0E] underline'>{currentBid?.numberOfBids ?? 0} bids</span>
                                 </h2>
-                                <h2>(Bid 700 GBP or more)</h2>
+                                <h2>({currentBid?.note ?? ''})</h2>
                             </div>
                         </div>
                         <div className='text-[#6E6E6E]'>
                             <h2>Auctioneer's estimate:&nbsp;
-                                <span className='text-[#0E0E0E] font-bold'>£ 1000 - £ 1200</span>
+                                <span className='text-[#0E0E0E] font-bold'>£ {auctioneerEstimate?.min ?? 0} - £ {auctioneerEstimate?.max ?? 0}</span>
                             </h2>
                             <h2>Additional fees apply:&nbsp;
-                                <span className='text-[#0E0E0E] font-bold'>29.94% Inc.VAT/sales tax</span>
+                                <span className='text-[#0E0E0E] font-bold'>{additionalFees}</span>
                             </h2>
                         </div>
                         <div className='w-full'>
@@ -113,17 +129,17 @@ export default function page() {
                     <button className='p-4 font-semibold focus:border-b-2 focus:border-[#0E0E0E] focus:text-[#0E0E0E]'>Shipping Options</button>
                 </div>
                 <div className='mt-8 font-medium text-lg'>
-                    <h2>Round 2.34ct Diamond, H Colour, VS2 Clarity, IGI Certified</h2>
+                    <h2>{title}</h2>
                     <div className='space-y-1.5 mt-5'>
-                        <h4>Carat Weight: 2.34ct</h4>
-                        <h4>Shape: Round</h4>
-                        <h4>Colour Grade: H</h4>
-                        <h4>Clarity Grade: VS2</h4>
-                        <h4>Fluorescence: None</h4>
-                        <h4>Diamond Type: Lab</h4>
-                        <h4>Certification: IGI</h4>
-                        <h4>Measurements: 8.55 - 8.58 x 5.27</h4>
-                        <h4>VAT Status: Plus VAT</h4>
+                        <h4>Carat Weight: {productDetails?.caratWeight}</h4>
+                        <h4>Shape: {productDetails?.shape}</h4>
+                        <h4>Colour Grade: {productDetails?.colorGrade}</h4>
+                        <h4>Clarity Grade: {productDetails?.clarityGrade}</h4>
+                        <h4>Fluorescence: {productDetails?.fluorescence}</h4>
+                        <h4>Diamond Type: {productDetails?.diamondType}</h4>
+                        <h4>Certification: {productDetails?.certification}</h4>
+                        <h4>Measurements: {productDetails?.measurements}</h4>
+                        <h4>VAT Status: {productDetails?.vatStatus}</h4>
                     </div>
                 </div>
             </div>
@@ -132,16 +148,15 @@ export default function page() {
                 <div className='max-w-7xl mx-auto'>
                     <h2 className='font-bold text-2xl text-[#0E0E0E] mb-8'>Similar Items Available Now</h2>
                     <div className='grid grid-cols-5 gap-y-6'>
-                        <GridViewCard />
-                        <GridViewCard />
-                        <GridViewCard />
-                        <GridViewCard />
-                        <GridViewCard />
-                        <GridViewCard />
-                        <GridViewCard />
-                        <GridViewCard />
-                        <GridViewCard />
-                        <GridViewCard />
+                        {
+                            data && data.length > 0 ? (
+                                data.slice(0, 10).map(item => (
+                                    <GridViewCard key={item.lotNumber} item={item} />
+                                ))
+                            ) : (
+                                <p>No similar items found.</p>
+                            )
+                        }
                     </div>
                 </div>
             </div>

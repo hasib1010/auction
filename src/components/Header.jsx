@@ -19,14 +19,16 @@ const Header = () => {
       {/* Fixed Header with width constraint */}
       <div className="w-full bg-[#F7F7F7] border-b border-[#E3E3E3] fixed top-0 left-0 z-[9999]">
         <div className="w-full max-w-[100vw] overflow-hidden">
-          <div className="py-5 max-w-7xl mx-auto px-4">
+          <div className="py-3 max-w-7xl mx-auto px-4">
             {/* Desktop layout - hidden on mobile */}
             <div className="hidden lg:flex flex-col items-center justify-end h-full w-full">
               <div className="flex items-center justify-between w-full px-10 space-x-3">
                 {/* Search input with dropdown */}
                 <div className="relative flex items-center">
                   {/* text Logo */}
-                  <div className='text-2xl text-[#0E0E0E] font-bold mr-5'>SMBros</div>
+                  <Link href="/" className='text-2xl text-[#0E0E0E] font-bold mr-5 cursor-pointer w-20'>
+                    <img src="/logo.png" alt="SMBros Logo" />
+                  </Link>
                   <div>
                     <input
                       type="text"
