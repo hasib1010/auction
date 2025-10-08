@@ -19,10 +19,10 @@ const Header = () => {
       {/* Fixed Header with width constraint */}
       <div className="w-full bg-[#F7F7F7] border-b border-[#E3E3E3] fixed top-0 left-0 z-[9999]">
         <div className="w-full max-w-[100vw] overflow-hidden">
-          <div className="py-3 max-w-7xl mx-auto px-4">
+          <div className="py-3 container mx-auto  ">
             {/* Desktop layout - hidden on mobile */}
             <div className="hidden lg:flex flex-col items-center justify-end h-full w-full">
-              <div className="flex items-center justify-between w-full px-10 space-x-3">
+              <div className="flex items-center justify-between w-full   space-x-3">
                 {/* Search input with dropdown */}
                 <div className="relative flex items-center">
                   {/* text Logo */}
@@ -33,9 +33,9 @@ const Header = () => {
                     <input
                       type="text"
                       placeholder="Search auctions"
-                      className="pl-5 py-3.5 pr-24 rounded-full border-none bg-white shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-300 w-72 text-sm text-gray-700 placeholder-gray-500"
+                      className="pl-5 py-3.5 pr-32  rounded-full border-none bg-white shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-300 w-72 text-sm text-gray-700 placeholder-gray-500"
                     />
-                    <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
+                    <div className="absolute bg-white right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
                       <select className="text-sm bg-transparent border-none focus:outline-none text-gray-600 pr-1 cursor-pointer">
                         <option>Upcoming</option>
                         <option>Live</option>
@@ -66,7 +66,9 @@ const Header = () => {
             {/* Mobile layout - visible only on mobile */}
             <div className="lg:hidden flex items-center justify-between w-full">
               {/* Logo on left */}
-              <Link href="/" className='text-2xl text-[#0E0E0E] font-bold'>SMBros</Link>
+               <Link href="/" className='text-2xl text-[#0E0E0E] font-bold mr-5 ml-4 cursor-pointer w-20'>
+                    <img src="/logo.png" alt="SMBros Logo" />
+                  </Link>
 
               {/* Hamburger button on right */}
               <button
