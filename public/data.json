@@ -35,7 +35,8 @@
       "Diamond",
       "Round Cut",
       "Lab Grown",
-      "IGI Certified"
+      "IGI Certified",
+      "VS2 Clarity"
     ]
   },
   {
@@ -71,16 +72,18 @@
       "vatStatus": "Plus VAT"
     },
     "tags": [
-      "Engagement",
+      "Engagement Ring",
       "Natural Diamond",
       "GIA Certified",
-      "Round Brilliant"
+      "Round Brilliant",
+      "Premium Quality",
+      "VVS1 Clarity"
     ]
   },
   {
     "lotNumber": "3X",
     "openingBid": 650,
-    "biddingEnds": "Mon, 25th Aug 2025, 10:00AM",
+    "biddingEnds": "Wed, 13th Aug 2025, 2:00PM",
     "title": "Sample Diamond 3ct, G Color, VS1 Clarity, IGI Certified",
     "category": "Loose Diamond",
     "auctioneerLocation": "London, UK",
@@ -113,13 +116,14 @@
       "Diamond",
       "Round Cut",
       "Lab Grown",
-      "IGI Certified"
+      "3 Carat",
+      "Investment Grade"
     ]
   },
   {
     "lotNumber": "4X",
     "openingBid": 700,
-    "biddingEnds": "Mon, 25th Aug 2025, 10:00AM",
+    "biddingEnds": "Thu, 21st Aug 2025, 11:00AM",
     "title": "Sample Diamond 4ct, G Color, VS1 Clarity, IGI Certified",
     "category": "Loose Diamond",
     "auctioneerLocation": "London, UK",
@@ -149,16 +153,17 @@
       "vatStatus": "Plus VAT"
     },
     "tags": [
-      "Diamond",
-      "Round Cut",
       "Lab Grown",
-      "IGI Certified"
+      "IGI Certified",
+      "VS1 Clarity",
+      "Large Stone",
+      "Ethical Diamond"
     ]
   },
   {
     "lotNumber": "5X",
     "openingBid": 750,
-    "biddingEnds": "Mon, 25th Aug 2025, 10:00AM",
+    "biddingEnds": "Fri, 29th Aug 2025, 3:00PM",
     "title": "Sample Diamond 5ct, G Color, VS1 Clarity, IGI Certified",
     "category": "Loose Diamond",
     "auctioneerLocation": "London, UK",
@@ -188,16 +193,17 @@
       "vatStatus": "Plus VAT"
     },
     "tags": [
-      "Diamond",
-      "Round Cut",
-      "Lab Grown",
-      "IGI Certified"
+      "5 Carat",
+      "Round Brilliant",
+      "Certified Diamond",
+      "Sustainable",
+      "G Color"
     ]
   },
   {
     "lotNumber": "6X",
     "openingBid": 800,
-    "biddingEnds": "Mon, 25th Aug 2025, 10:00AM",
+    "biddingEnds": "Mon, 18th Aug 2025, 10:00AM",
     "title": "Sample Diamond 6ct, G Color, VS1 Clarity, IGI Certified",
     "category": "Loose Diamond",
     "auctioneerLocation": "London, UK",
@@ -227,16 +233,17 @@
       "vatStatus": "Plus VAT"
     },
     "tags": [
-      "Diamond",
-      "Round Cut",
       "Lab Grown",
-      "IGI Certified"
+      "6 Carat",
+      "IGI Certified",
+      "Near Colorless",
+      "Statement Stone"
     ]
   },
   {
     "lotNumber": "7X",
     "openingBid": 850,
-    "biddingEnds": "Mon, 25th Aug 2025, 10:00AM",
+    "biddingEnds": "Tue, 26th Aug 2025, 1:00PM",
     "title": "Sample Diamond 7ct, G Color, VS1 Clarity, IGI Certified",
     "category": "Loose Diamond",
     "auctioneerLocation": "London, UK",
@@ -269,13 +276,15 @@
       "Diamond",
       "Round Cut",
       "Lab Grown",
-      "IGI Certified"
+      "7 Carat",
+      "Exceptional Size",
+      "VS1"
     ]
   },
   {
     "lotNumber": "8X",
     "openingBid": 900,
-    "biddingEnds": "Mon, 25th Aug 2025, 10:00AM",
+    "biddingEnds": "Wed, 27th Aug 2025, 4:00PM",
     "title": "Sample Diamond 8ct, G Color, VS1 Clarity, IGI Certified",
     "category": "Loose Diamond",
     "auctioneerLocation": "London, UK",
@@ -305,16 +314,17 @@
       "vatStatus": "Plus VAT"
     },
     "tags": [
-      "Diamond",
-      "Round Cut",
-      "Lab Grown",
-      "IGI Certified"
+      "Certified Diamond",
+      "8 Carat",
+      "Lab Created",
+      "Investment Quality",
+      "IGI"
     ]
   },
   {
     "lotNumber": "9X",
     "openingBid": 950,
-    "biddingEnds": "Mon, 25th Aug 2025, 10:00AM",
+    "biddingEnds": "Thu, 14th Aug 2025, 12:00PM",
     "title": "Sample Diamond 9ct, G Color, VS1 Clarity, IGI Certified",
     "category": "Loose Diamond",
     "auctioneerLocation": "London, UK",
@@ -344,16 +354,17 @@
       "vatStatus": "Plus VAT"
     },
     "tags": [
-      "Diamond",
-      "Round Cut",
+      "Round Brilliant",
+      "9 Carat",
       "Lab Grown",
-      "IGI Certified"
+      "Rare Size",
+      "G Color Grade"
     ]
   },
   {
     "lotNumber": "10X",
     "openingBid": 1000,
-    "biddingEnds": "Mon, 25th Aug 2025, 10:00AM",
+    "biddingEnds": "Fri, 22nd Aug 2025, 10:00AM",
     "title": "Sample Diamond 10ct, G Color, VS1 Clarity, IGI Certified",
     "category": "Loose Diamond",
     "auctioneerLocation": "London, UK",
@@ -383,16 +394,17 @@
       "vatStatus": "Plus VAT"
     },
     "tags": [
-      "Diamond",
-      "Round Cut",
+      "10 Carat",
+      "IGI Certified",
       "Lab Grown",
-      "IGI Certified"
+      "Premium Stone",
+      "Collectible"
     ]
   },
   {
     "lotNumber": "11X",
     "openingBid": 1050,
-    "biddingEnds": "Mon, 25th Aug 2025, 10:00AM",
+    "biddingEnds": "Mon, 11th Aug 2025, 2:30PM",
     "title": "Sample Diamond 11ct, G Color, VS1 Clarity, IGI Certified",
     "category": "Loose Diamond",
     "auctioneerLocation": "London, UK",
@@ -423,15 +435,16 @@
     },
     "tags": [
       "Diamond",
-      "Round Cut",
-      "Lab Grown",
-      "IGI Certified"
+      "11 Carat",
+      "Lab Created",
+      "Ethical Choice",
+      "VS1 Clarity"
     ]
   },
   {
     "lotNumber": "12X",
     "openingBid": 1100,
-    "biddingEnds": "Mon, 25th Aug 2025, 10:00AM",
+    "biddingEnds": "Tue, 19th Aug 2025, 11:30AM",
     "title": "Sample Diamond 12ct, G Color, VS1 Clarity, IGI Certified",
     "category": "Loose Diamond",
     "auctioneerLocation": "London, UK",
@@ -461,16 +474,17 @@
       "vatStatus": "Plus VAT"
     },
     "tags": [
-      "Diamond",
       "Round Cut",
-      "Lab Grown",
-      "IGI Certified"
+      "12 Carat",
+      "Certified",
+      "Sustainable Diamond",
+      "Luxury"
     ]
   },
   {
     "lotNumber": "13X",
     "openingBid": 1150,
-    "biddingEnds": "Mon, 25th Aug 2025, 10:00AM",
+    "biddingEnds": "Wed, 20th Aug 2025, 3:30PM",
     "title": "Sample Diamond 13ct, G Color, VS1 Clarity, IGI Certified",
     "category": "Loose Diamond",
     "auctioneerLocation": "London, UK",
@@ -500,16 +514,17 @@
       "vatStatus": "Plus VAT"
     },
     "tags": [
-      "Diamond",
-      "Round Cut",
       "Lab Grown",
-      "IGI Certified"
+      "IGI Certified",
+      "13 Carat",
+      "Exceptional",
+      "Round Brilliant"
     ]
   },
   {
     "lotNumber": "14X",
     "openingBid": 1200,
-    "biddingEnds": "Mon, 25th Aug 2025, 10:00AM",
+    "biddingEnds": "Thu, 28th Aug 2025, 1:00PM",
     "title": "Sample Diamond 14ct, G Color, VS1 Clarity, IGI Certified",
     "category": "Loose Diamond",
     "auctioneerLocation": "London, UK",
@@ -539,16 +554,17 @@
       "vatStatus": "Plus VAT"
     },
     "tags": [
-      "Diamond",
-      "Round Cut",
-      "Lab Grown",
-      "IGI Certified"
+      "14 Carat",
+      "Lab Diamond",
+      "IGI",
+      "Investment Piece",
+      "G Color"
     ]
   },
   {
     "lotNumber": "15X",
     "openingBid": 1250,
-    "biddingEnds": "Mon, 25th Aug 2025, 10:00AM",
+    "biddingEnds": "Fri, 15th Aug 2025, 4:00PM",
     "title": "Sample Diamond 15ct, G Color, VS1 Clarity, IGI Certified",
     "category": "Loose Diamond",
     "auctioneerLocation": "London, UK",
@@ -579,15 +595,16 @@
     },
     "tags": [
       "Diamond",
-      "Round Cut",
-      "Lab Grown",
-      "IGI Certified"
+      "15 Carat",
+      "Lab Created",
+      "Certified",
+      "Showstopper"
     ]
   },
   {
     "lotNumber": "16X",
     "openingBid": 1300,
-    "biddingEnds": "Mon, 25th Aug 2025, 10:00AM",
+    "biddingEnds": "Mon, 25th Aug 2025, 11:00AM",
     "title": "Sample Diamond 16ct, G Color, VS1 Clarity, IGI Certified",
     "category": "Loose Diamond",
     "auctioneerLocation": "London, UK",
@@ -617,16 +634,17 @@
       "vatStatus": "Plus VAT"
     },
     "tags": [
-      "Diamond",
-      "Round Cut",
+      "Round Brilliant",
+      "16 Carat",
       "Lab Grown",
+      "Ultra Rare",
       "IGI Certified"
     ]
   },
   {
     "lotNumber": "17X",
     "openingBid": 1350,
-    "biddingEnds": "Mon, 25th Aug 2025, 10:00AM",
+    "biddingEnds": "Tue, 12th Aug 2025, 2:00PM",
     "title": "Sample Diamond 17ct, G Color, VS1 Clarity, IGI Certified",
     "category": "Loose Diamond",
     "auctioneerLocation": "London, UK",
@@ -656,16 +674,17 @@
       "vatStatus": "Plus VAT"
     },
     "tags": [
-      "Diamond",
-      "Round Cut",
-      "Lab Grown",
-      "IGI Certified"
+      "Lab Diamond",
+      "17 Carat",
+      "VS1 Clarity",
+      "Collector's Item",
+      "Certified"
     ]
   },
   {
     "lotNumber": "18X",
     "openingBid": 1400,
-    "biddingEnds": "Mon, 25th Aug 2025, 10:00AM",
+    "biddingEnds": "Wed, 6th Aug 2025, 10:30AM",
     "title": "Sample Diamond 18ct, G Color, VS1 Clarity, IGI Certified",
     "category": "Loose Diamond",
     "auctioneerLocation": "London, UK",
@@ -695,16 +714,17 @@
       "vatStatus": "Plus VAT"
     },
     "tags": [
-      "Diamond",
-      "Round Cut",
+      "18 Carat",
       "Lab Grown",
-      "IGI Certified"
+      "IGI Certified",
+      "Museum Quality",
+      "G Color"
     ]
   },
   {
     "lotNumber": "19X",
     "openingBid": 1450,
-    "biddingEnds": "Mon, 25th Aug 2025, 10:00AM",
+    "biddingEnds": "Thu, 7th Aug 2025, 3:00PM",
     "title": "Sample Diamond 19ct, G Color, VS1 Clarity, IGI Certified",
     "category": "Loose Diamond",
     "auctioneerLocation": "London, UK",
@@ -734,16 +754,17 @@
       "vatStatus": "Plus VAT"
     },
     "tags": [
-      "Diamond",
       "Round Cut",
-      "Lab Grown",
-      "IGI Certified"
+      "19 Carat",
+      "Lab Created",
+      "Extraordinary",
+      "Certified Diamond"
     ]
   },
   {
     "lotNumber": "20X",
     "openingBid": 1500,
-    "biddingEnds": "Mon, 25th Aug 2025, 10:00AM",
+    "biddingEnds": "Fri, 8th Aug 2025, 1:30PM",
     "title": "Sample Diamond 20ct, G Color, VS1 Clarity, IGI Certified",
     "category": "Loose Diamond",
     "auctioneerLocation": "London, UK",
@@ -774,9 +795,11 @@
     },
     "tags": [
       "Diamond",
-      "Round Cut",
+      "20 Carat",
       "Lab Grown",
-      "IGI Certified"
+      "IGI Certified",
+      "Masterpiece",
+      "Heirloom Quality"
     ]
   }
 ]

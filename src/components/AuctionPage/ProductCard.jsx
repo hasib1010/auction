@@ -2,7 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 
 export default function ProductCard({ item }) {
-    const { lotNumber, biddingEnds, title, auctioneerLocation, category, currentBid, auctioneerEstimate, additionalFees, imagePath, imageAlt, productDetails } = item;
+    const { lotNumber, biddingEnds, title, auctioneerLocation, category, imagePath, imageAlt, tags } = item;
     return (
         <div className='rounded-[20px] p-2 hover:shadow-lg transition-shadow border border-[#E3E3E3] grid grid-cols-1 md:grid-cols-[240px_1fr_240px]'>
             <div className='bg-[#f7f7f7] rounded-[14px] flex flex-col justify-center items-center'>
@@ -52,6 +52,13 @@ export default function ProductCard({ item }) {
                         <div className='text-center py-2 w-full px-5 border bg-gradient-to-bl from-[#9F13FB] to-[#E95AFF] text-white rounded-full'>View Auction</div>
                     </Link>
                     <div className='text-center py-2 px-5 w-full border border-[#9F13FB] text-[#9F13FB] rounded-full'>Consign with Us</div>
+                    <div>
+                        {tags && tags.map((tag, index) => (
+                            <span key={index} className="inline-block bg-[#F7F7F7] text-[#0E0E0E] text-xs font-medium mr-2 mb-2 px-3 py-1 rounded-full">
+                                {tag}
+                            </span>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

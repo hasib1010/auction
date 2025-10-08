@@ -19,10 +19,7 @@ export default function FilterComponent() {
     const toggleDropdownAuctionStatus = () => {
         setIsOpenAuctionStatus(prev => !prev);
     };
-    const [isOpenAuctionHouse, setIsOpenAuctionHouse] = useState(true);
-    const toggleDropdownAuctionHouse = () => {
-        setIsOpenAuctionHouse(prev => !prev);
-    };
+    
     const [isOpenPriceRange, setIsOpenPriceRange] = useState(true);
     const toggleDropdownPriceRange = () => {
         setIsOpenPriceRange(prev => !prev);
@@ -36,7 +33,7 @@ export default function FilterComponent() {
     const [country, setCountry] = useState("United Kingdom");
     const [category, setCategory] = useState("");
     const [selectedAuctionStatus, setSelectedAuctionStatus] = useState("");
-    const [auctionHouse, setAuctionHouse] = useState("");
+    
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [range, setRange] = useState([20, 80]);
@@ -47,13 +44,13 @@ export default function FilterComponent() {
             location: country,
             category: category,
             auctionStatus: selectedAuctionStatus,
-            auctionHouse: auctionHouse,
+            
             dateRange: { startDate, endDate },
             range: range
         };
 
         console.log("Selected Filters:", filterData);
-    }, [keyword, country, category, selectedAuctionStatus, auctionHouse, startDate, endDate, range]);
+    }, [keyword, country, category, selectedAuctionStatus, startDate, endDate, range]);
 
 
     const countries = [
@@ -77,13 +74,6 @@ export default function FilterComponent() {
         { label: "Upcoming", count: 456 },
         { label: "Past Auction", count: 687 }
     ];
-
-    const auctionHouses = [
-        { label: "Robert Auction House", count: 43 },
-        { label: "Brighton Auction House", count: 456 },
-        { label: "Self Esteem Auction House", count: 687 }
-    ]
-
 
     const handleChange = (newRange) => {
         setRange(newRange);
@@ -319,65 +309,7 @@ export default function FilterComponent() {
                         ))}
                     </div>
                 )}
-
-
-                {/* Auction House */}
-                <div className='flex justify-between my-5' onClick={toggleDropdownAuctionHouse}>
-                    <h5 className='font-medium text-lg text-[#0E0E0E]'>Auction House</h5>
-                    {isOpenAuctionHouse ? (
-                        // Up arrow
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
-                            <path d="M16.258 12.9581C16.1033 13.1126 15.8936 13.1994 15.675 13.1994C15.4564 13.1994 15.2467 13.1126 15.092 12.9581L11 8.86612L6.90801 12.9581C6.83248 13.0392 6.74139 13.1042 6.64018 13.1493C6.53897 13.1944 6.4297 13.2186 6.31893 13.2206C6.20816 13.2225 6.09813 13.2022 5.9954 13.1607C5.89267 13.1192 5.79935 13.0574 5.72101 12.9791C5.64267 12.9007 5.58091 12.8074 5.53942 12.7047C5.49793 12.602 5.47755 12.4919 5.4795 12.3812C5.48146 12.2704 5.5057 12.1611 5.55079 12.0599C5.59588 11.9587 5.66089 11.8677 5.74201 11.7921L10.417 7.11714C10.5717 6.96261 10.7814 6.87582 11 6.87582C11.2186 6.87582 11.4283 6.96261 11.583 7.11714L16.258 11.7921C16.4125 11.9468 16.4993 12.1565 16.4993 12.3751C16.4993 12.5938 16.4125 12.8034 16.258 12.9581Z" fill="#0E0E0E" />
-                        </svg>
-                    ) : (
-                        // Down arrow (original)
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
-                            <path d="M5.74201 9.04188C5.89669 8.88738 6.10638 8.8006 6.32501 8.8006C6.54363 8.8006 6.75332 8.88738 6.90801 9.04188L11 13.1339L15.092 9.04188C15.1675 8.96082 15.2586 8.89581 15.3598 8.85072C15.461 8.80563 15.5703 8.78138 15.681 8.77943C15.7918 8.77747 15.9018 8.79785 16.0046 8.83934C16.1073 8.88083 16.2006 8.94259 16.2789 9.02093C16.3573 9.09927 16.419 9.19259 16.4605 9.29532C16.502 9.39805 16.5224 9.50808 16.5205 9.61885C16.5185 9.72962 16.4943 9.83887 16.4492 9.94007C16.4041 10.0413 16.3391 10.1323 16.258 10.2079L11.583 14.8829C11.4283 15.0374 11.2186 15.1242 11 15.1242C10.7814 15.1242 10.5717 15.0374 10.417 14.8829L5.74201 10.2079C5.58751 10.0532 5.50073 9.8435 5.50073 9.62488C5.50073 9.40625 5.58751 9.19656 5.74201 9.04188Z" fill="#0E0E0E" />
-                        </svg>
-                    )}
-                </div>
-                {isOpenAuctionHouse && (
-                    <div>
-                        <div className='relative my-5'>
-                            <input
-                                type="text"
-                                placeholder="Search auction houses"
-                                value={auctionHouse}
-                                onChange={e => setAuctionHouse(e.target.value)}
-                                className="w-full px-4 py-3.5 rounded-lg border-[1px] border-[#E3E3E3] bg-[#F7F7F7] focus:outline-none focus:ring-2 focus:ring-purple-300 text-sm text-gray-700 placeholder-[#9F9F9F]" />
-                            <div className="absolute top-4 left-[340px] md:left-[270px]">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                    <path d="M17.9422 17.058L14.0305 13.1471C15.1642 11.7859 15.7296 10.04 15.6089 8.27263C15.4883 6.50524 14.6909 4.85241 13.3826 3.65797C12.0744 2.46353 10.356 1.81944 8.58492 1.85969C6.81388 1.89994 5.12653 2.62143 3.87389 3.87407C2.62125 5.12671 1.89976 6.81406 1.85951 8.5851C1.81926 10.3561 2.46334 12.0745 3.65779 13.3828C4.85223 14.691 6.50506 15.4884 8.27244 15.6091C10.0398 15.7298 11.7857 15.1644 13.1469 14.0306L17.0578 17.9424C17.1159 18.0004 17.1848 18.0465 17.2607 18.0779C17.3366 18.1094 17.4179 18.1255 17.5 18.1255C17.5821 18.1255 17.6634 18.1094 17.7393 18.0779C17.8152 18.0465 17.8841 18.0004 17.9422 17.9424C18.0003 17.8843 18.0463 17.8154 18.0777 17.7395C18.1092 17.6636 18.1253 17.5823 18.1253 17.5002C18.1253 17.4181 18.1092 17.3367 18.0777 17.2609C18.0463 17.185 18.0003 17.1161 17.9422 17.058ZM3.125 8.75018C3.125 7.63766 3.4549 6.55012 4.07298 5.6251C4.69106 4.70007 5.56957 3.9791 6.5974 3.55336C7.62524 3.12761 8.75624 3.01622 9.84738 3.23326C10.9385 3.4503 11.9408 3.98603 12.7275 4.7727C13.5141 5.55937 14.0499 6.56165 14.2669 7.6528C14.484 8.74394 14.3726 9.87494 13.9468 10.9028C13.5211 11.9306 12.8001 12.8091 11.8751 13.4272C10.9501 14.0453 9.86252 14.3752 8.75 14.3752C7.25866 14.3735 5.82888 13.7804 4.77435 12.7258C3.71981 11.6713 3.12665 10.2415 3.125 8.75018Z" fill="#6E6E6E" />
-                                </svg>
-                            </div>
-                        </div><div className="flex flex-col gap-2 mt-4" value={auctionHouse} onChange={e => setAuctionHouse(e.target.value)}>
-                            {auctionHouses.map(({ label, count }) => (
-                                <label key={label} className="flex items-center gap-2 cursor-pointer">
-                                    <input
-                                        type="radio"
-                                        name="house"
-                                        value={label}
-                                        className="sr-only peer" />
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="18"
-                                        height="18"
-                                        viewBox="0 0 18 18"
-                                        fill="none"
-                                        stroke="#9F9F9F"
-                                        strokeWidth="1.25"
-                                        className="peer-checked:fill-purple-600"
-                                    >
-                                        <path d="M1.875 9C1.875 5.64124 1.875 3.96187 2.91843 2.91843C3.96187 1.875 5.64124 1.875 9 1.875C12.3587 1.875 14.0381 1.875 15.0816 2.91843C16.125 3.96187 16.125 5.64124 16.125 9C16.125 12.3587 16.125 14.0381 15.0816 15.0816C14.0381 16.125 12.3587 16.125 9 16.125C5.64124 16.125 3.96187 16.125 2.91843 15.0816C1.875 14.0381 1.875 12.3587 1.875 9Z" />
-                                    </svg>
-                                    <span className="text-sm text-[#0E0E0E]">
-                                        {label} ({count})
-                                    </span>
-                                </label>
-                            ))}
-                        </div>
-                    </div>
-                )}
+                {/* price range */}
                 <div>
                     <div className='flex justify-between my-5' onClick={toggleDropdownPriceRange}>
                         <h5 className='font-medium text-lg text-[#0E0E0E]'>Price Range</h5>
