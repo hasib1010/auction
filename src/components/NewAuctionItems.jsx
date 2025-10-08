@@ -176,7 +176,7 @@ const AuctionItemsCarousel = () => {
   }, []);
 
   return (
-    <div className="w-full bg-gradient-to-br from-orange-50 to-amber-50 pb-0 py-10 md:pb-80 ">
+    <div className="w-full bg-gradient-to-br from-orange-50 to-amber-50 pb-0 py-10 md:pb-20 rounded-b-2xl">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-center text-center sm:text-left mb-8 sm:mb-12 lg:mb-16 gap-4 sm:gap-6">

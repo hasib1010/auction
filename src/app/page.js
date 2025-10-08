@@ -12,9 +12,7 @@ export default function Home() {
       <MainContentCards />
       <ComingSoonSection />
       <NewAuctionItems />
-      <div className="md:hidden">
-        <HeroCTASection />
-      </div>
+      <HeroCTASection />
       <Footer />
     </div>
   );

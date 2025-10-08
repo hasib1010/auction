@@ -1,17 +1,16 @@
 // components/Footer.js
 import React from 'react';
-import HeroCTASection from "@/components/HeroCTASection";
+// import HeroCTASection from "@/components/HeroCTASection";
 
 const Footer = () => {
   return (
     <footer className="bg-[#0E0E0E] text-white py-16">
       <div className="max-w-7xl mx-auto px-8">
         {/* relative component */}
-        <div className="hidden md:block mt-0 md:-mt-96">
+        {/* <div className="hidden md:block mt-0 md:-mt-96">
           <HeroCTASection />
-        </div>
+        </div> */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-
           {/* Logo and Copyright */}
           <div className="md:col-span-1">
             <div className="mb-1 md:mb-8 w-32">

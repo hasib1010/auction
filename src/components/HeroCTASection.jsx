@@ -3,13 +3,13 @@ import React from 'react';
 
 const HeroCTASection = () => {
   return (
-    <section className="md:rounded-[32px] bg-[linear-gradient(305deg,#9F13FB_14.33%,#E95AFF_95.9%)] md:my-[80px] mx-auto">
+    <section className="md:rounded-t-[32px] bg-[linear-gradient(305deg,#9F13FB_14.33%,#E95AFF_95.9%)] mx-auto">
       {/* Background decorative elements */}
 
-        <div className=" flex flex-col md:flex-row items-center md:items-end pt-10">
+        <div className=" flex flex-col md:flex-row items-center md:items-end pt-4">
 
           {/* Left Content */}
-          <div className="text-white md:px-20 px-3  items-center md:items-start text-center md:text-left">
+          <div className="text-white md:px-20 px-3 pb-4 items-center md:items-start text-center md:text-left">
             <div className="inline-block mb-6">
               <span className="rounded-[140px] border border-[rgba(255,255,255,0.5)] bg-[rgba(255,255,255,0.25)] px-[18px] py-2">
                 Listing Invitations
@@ -34,12 +34,8 @@ const HeroCTASection = () => {
               </button>
             </div>
           </div>
-
           {/* Right Content - Character Cards and Person */}
-          
             <img className='-mb-4' src="/image 69.png" alt="" />
-        
-
         </div>
     </section>
   );
