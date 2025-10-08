@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PagePath from '@/components/PagePath';
 import GridViewCard from '@/components/AuctionPage/GridViewCard';
+import HeroCTASection from "@/components/HeroCTASection";
 
 
 export default function page({ params }) {
@@ -144,7 +145,7 @@ export default function page({ params }) {
                 </div>
             </div>
             {/* Similar section */}
-            <div className='bg-[#F2F0E9] pt-20 pb-80'>
+            <div className='bg-[#F2F0E9] p-20 rounded-b-3xl'>
                 <div className='max-w-7xl mx-auto'>
                     <h2 className='font-bold text-2xl text-[#0E0E0E] mb-8'>Similar Items Available Now</h2>
                     <div className='grid grid-cols-5 gap-y-6'>
@@ -161,7 +162,7 @@ export default function page({ params }) {
                 </div>
             </div>
             <div>
-
+                <HeroCTASection />
             </div>
             <Footer />
         </div>
