@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import FilterComponent from '@/components/AuctionPage/FilterComponent';
 import ProductCard from '@/components/AuctionPage/ProductCard';
 import Sort from '@/components/AuctionPage/SortingComp';
+import HeroCTASection from '@/components/HeroCTASection';
 
 export default function Page() {
   const [data, setData] = useState(null);
@@ -86,6 +87,7 @@ export default function Page() {
           )}
         </div>
       </div>
+      <HeroCTASection />
       <Footer />
     </div>
   );
