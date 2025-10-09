@@ -1,86 +1,129 @@
 'use client';
 
-import { useState, useCallback, memo } from 'react';
+import { useState, useCallback, memo, useEffect } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { ChevronLeft, ChevronRight, Eye, Calendar } from 'lucide-react';
 import Link from 'next/link';
 
 // Memoized auction card component for better performance
-const AuctionCard = memo(({ item }) => (
-  <div className="px-1 sm:px-2 h-full">
-    <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-1 h-full transform hover:-translate-y-1">
-      {/* Image with lazy loading */}
-      <div className="aspect-square rounded-[14px] bg-gray-100 overflow-hidden">
-        <img
-          src={item.image}
-          alt={item.title}
-          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-          loading="lazy"
-          draggable={false}
-        />
-      </div>
+const AuctionCard = memo(({ item }) => {
+  const parseDate = (str) => {
+    if (!str) return null;
+    const match = str.match(/(\d+)\w*\s+([A-Za-z]+)\s+(\d{4}),\s+(\d+):(\d+)(AM|PM)/);
+    if (!match) return null;
 
-      {/* Content */}
-      <div className="p-2 sm:p-3 lg:p-4">
-        <h3 className="font-semibold text-gray-700 text-xs sm:text-sm lg:text-base xl:text-lg mb-2 line-clamp-2 leading-tight min-h-[2rem] sm:min-h-[2.5rem] lg:min-h-[3rem]">
-          {item.title}
-        </h3>
+    const [_, day, month, year, hour, minute, meridiem] = match;
+    let hours = parseInt(hour);
+    if (meridiem === 'PM' && hours !== 12) hours += 12;
+    if (meridiem === 'AM' && hours === 12) hours = 0;
 
-        <div className="flex flex-col gap-2 mb-3">
-          <div className="flex flex-wrap items-center justify-between gap-1">
-            <span
-              className={`px-2 py-1 rounded-full text-xs font-medium w-fit transition-colors ${item.status === 'Live'
-                  ? 'bg-red-50 text-red-600 border border-red-200'
-                  : 'bg-amber-50 text-amber-700 border border-amber-200'
-                }`}
-            >
-              {item.status}
-            </span>
-            <span className="text-xs text-gray-600 font-medium">
-              {item.endTime}
-            </span>
-          </div>
+    const dateStr = `${month} ${day}, ${year} ${hours.toString().padStart(2, '0')}:${minute}:00`;
+    return new Date(dateStr);
+  };
+
+  const endDate = parseDate(item.biddingEnds);
+  const now = new Date();
+  const isToday = endDate?.toDateString() === now.toDateString();
+  const isPast = endDate && endDate < now && !isToday;
+
+  return (
+    <div className="px-1 sm:px-2 h-full">
+      <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-1 h-full transform hover:-translate-y-1">
+        {/* Image with lazy loading */}
+        <div className="aspect-square rounded-[14px] bg-gray-100 overflow-hidden">
+          <img
+            src={item.imagePath}
+            alt={item.imageAlt}
+            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+            loading="lazy"
+            draggable={false}
+          />
         </div>
 
-        {/* Actions */}
-        <div className="flex items-center gap-1 sm:gap-2">
-          <button
-            className={`flex-1 py-2 px-2 sm:px-3 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 ${item.status === 'Live'
-                ? 'bg-purple-600 text-white hover:bg-purple-700 hover:shadow-md active:scale-95'
-                : 'bg-gray-100 text-gray-500 cursor-not-allowed'
-              }`}
-            disabled={item.status !== 'Live'}
-          >
-            {item.status === 'Live' ? 'Bid Now' : 'Coming Soon'}
-          </button>
-          <button className="w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all duration-200 hover:scale-110">
-            <Eye size={12} className="sm:w-4 sm:h-4" />
-          </button>
-          <button className="w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all duration-200 hover:scale-110">
-            <Calendar size={12} className="sm:w-4 sm:h-4" />
-          </button>
+        {/* Content */}
+        <div className="p-2 sm:p-3 lg:p-4">
+          <h3 className="font-semibold text-gray-700 text-xs sm:text-sm lg:text-base xl:text-lg mb-2 line-clamp-2 leading-tight min-h-[2rem] sm:min-h-[2.5rem] lg:min-h-[3rem]">
+            {item.title}
+          </h3>
+
+          <div className="flex flex-col gap-2 mb-3">
+            <div className="flex flex-wrap items-center justify-between gap-1">
+              <span>
+                {
+                  !endDate ? (
+                    <div className="text-gray-500">Invalid date</div>
+                  ) : isToday ? (
+                    <div className='flex items-center justify-center bg-[#FEF8ED] border border-[#F6BC48] text-[#DB9914] text-xs rounded-full p-1 w-20'>
+                      <h2>Ends Today</h2>
+                    </div>
+                  ) : isPast ? (
+                    <div className='flex items-center justify-center bg-[#F7F7F7] border border-[#E3E3E3] text-[#4D4D4D] text-xs rounded-full p-1 w-14'>
+
+                      <h2>Closed</h2>
+                    </div>
+                  ) : (
+                    <div className='flex items-center justify-center bg-[#feeded] border border-[#FA9A9C] text-[#F6484B] text-xs rounded-full p-1 w-10'>
+                      <h2>Live</h2>
+                    </div>
+                  )
+                }
+              </span>
+              <span className="text-xs text-gray-600 font-medium">
+                {item.biddingEnds}
+              </span>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="flex items-center gap-1 sm:gap-2">
+            <button
+              className={`flex-1 py-2 px-2 sm:px-3 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 ${isPast
+                ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                : 'bg-gradient-to-br from-[#e253ff] to-[#9f14fc] text-white hover:shadow-md active:scale-95'
+                }`}
+              disabled={isPast}
+            >
+              {isPast ? 'Auction Closed' : 'Bid Now'}
+            </button>
+            <Link href={`/auction/${item.lotNumber}/details`}>
+              <button className="flex items-center justify-center bg-[#F7F7F7] rounded-full p-3 border border-[#E3E3E3] hover:border-purple-600 text-gray-400 hover:text-purple-600 hover:bg-purple-50 transition-all duration-200 hover:scale-110">
+                <Eye size={12} className="sm:w-4 sm:h-4" />
+              </button>
+            </Link>
+            <button className="flex items-center justify-center bg-[#F7F7F7] rounded-full p-3 border border-[#E3E3E3] hover:border-purple-600 text-gray-400 hover:text-purple-600 hover:bg-purple-50 transition-all duration-200 hover:scale-110">
+              <Calendar size={12} className="sm:w-4 sm:h-4" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-));
+  );
+});
 
 AuctionCard.displayName = 'AuctionCard';
 
 const AuctionItemsCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [data, setData] = useState(null);
 
-  const auctionItems = [
-    { id: 1, title: "LEGO Super Heroes The Batcave 6860", image: "Rectangle 662.png", status: "Live", endTime: "17/5/2025, 2:00pm" },
-    { id: 2, title: "Dungeons & Dragons - Starter Set: Heroes of The...", image: "Rectangle 662 (3).png", status: "Live", endTime: "17/5/2025, 2:00pm" },
-    { id: 3, title: "Marvel Super Hero Trainer - Interactive Fitness Toy for...", image: "Rectangle 662 (1).png", status: "Upcoming", endTime: "17/5/2025, 2:00pm" },
-    { id: 4, title: "LEGO Super Heroes The Batcave 6860", image: "Rectangle 662.png", status: "Live", endTime: "17/5/2025, 2:00pm" },
-    { id: 5, title: "Pokemon Trading Cards Collection", image: "Rectangle 662 (2).png", status: "Live", endTime: "18/5/2025, 3:00pm" },
-    { id: 6, title: "Vintage Action Figures Set", image: "Rectangle 662.png", status: "Upcoming", endTime: "19/5/2025, 1:00pm" },
-    { id: 7, title: "Board Game Collection", image: "Rectangle 662.png", status: "Live", endTime: "20/5/2025, 4:00pm" },
-    { id: 8, title: "Comic Books Bundle", image: "Rectangle 662.png", status: "Upcoming", endTime: "21/5/2025, 2:30pm" }
-  ];
+  useEffect(() => {
+    fetch('/data.json')
+      .then((res) => res.json())
+      .then((json) => setData(json))
+      .catch((err) => console.error('Error loading data.json:', err));
+  }, []);
+
+  // const auctionItems = [
+  //   { id: 1, title: "LEGO Super Heroes The Batcave 6860", image: "Rectangle 662.png", status: "Live", endTime: "17/5/2025, 2:00pm" },
+  //   { id: 2, title: "Dungeons & Dragons - Starter Set: Heroes of The...", image: "Rectangle 662 (3).png", status: "Live", endTime: "17/5/2025, 2:00pm" },
+  //   { id: 3, title: "Marvel Super Hero Trainer - Interactive Fitness Toy for...", image: "Rectangle 662 (1).png", status: "Upcoming", endTime: "17/5/2025, 2:00pm" },
+  //   { id: 4, title: "LEGO Super Heroes The Batcave 6860", image: "Rectangle 662.png", status: "Live", endTime: "17/5/2025, 2:00pm" },
+  //   { id: 5, title: "Pokemon Trading Cards Collection", image: "Rectangle 662 (2).png", status: "Live", endTime: "18/5/2025, 3:00pm" },
+  //   { id: 6, title: "Vintage Action Figures Set", image: "Rectangle 662.png", status: "Upcoming", endTime: "19/5/2025, 1:00pm" },
+  //   { id: 7, title: "Board Game Collection", image: "Rectangle 662.png", status: "Live", endTime: "20/5/2025, 4:00pm" },
+  //   { id: 8, title: "Comic Books Bundle", image: "Rectangle 662.png", status: "Upcoming", endTime: "21/5/2025, 2:30pm" }
+  // ];
 
   // Optimized responsive breakpoints
   const responsive = {
@@ -124,8 +167,8 @@ const AuctionItemsCarousel = () => {
         onClick={onClick}
         disabled={currentSlide === 0}
         className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full shadow-md flex items-center justify-center transition-all duration-200 -translate-x-3 sm:-translate-x-4 lg:-translate-x-5 ${currentSlide === 0
-            ? 'bg-gray-200 text-gray-400 cursor-not-allowed opacity-50'
-            : 'bg-white text-gray-600 hover:bg-gray-50 hover:shadow-lg hover:scale-105 active:scale-95'
+          ? 'bg-gray-200 text-gray-400 cursor-not-allowed opacity-50'
+          : 'bg-white text-gray-600 hover:bg-gray-50 hover:shadow-lg hover:scale-105 active:scale-95'
           }`}
         aria-label="Previous items"
       >
@@ -144,8 +187,8 @@ const AuctionItemsCarousel = () => {
         onClick={onClick}
         disabled={isAtEnd}
         className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full shadow-md flex items-center justify-center transition-all duration-200 translate-x-3 sm:translate-x-4 lg:translate-x-5 ${isAtEnd
-            ? 'bg-gray-200 text-gray-400 cursor-not-allowed opacity-50'
-            : 'bg-white text-gray-600 hover:bg-gray-50 hover:shadow-lg hover:scale-105 active:scale-95'
+          ? 'bg-gray-200 text-gray-400 cursor-not-allowed opacity-50'
+          : 'bg-white text-gray-600 hover:bg-gray-50 hover:shadow-lg hover:scale-105 active:scale-95'
           }`}
         aria-label="Next items"
       >
@@ -211,9 +254,15 @@ const AuctionItemsCarousel = () => {
             rewind={false}
             rewindWithAnimation={false}
           >
-            {auctionItems.map((item) => (
-              <AuctionCard key={item.id} item={item} />
-            ))}
+            {
+              data && data.length > 0 ? (
+                data.slice(0, 10).map(item => (
+                  <AuctionCard key={item.lotNumber} item={item} />
+                ))
+              ) : (
+                <p>No similar items found.</p>
+              )
+            }
           </Carousel>
         </div>
 
