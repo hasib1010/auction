@@ -101,13 +101,13 @@ export default function ProductCard({ item }) {
                     <Link href={`/auction/${lotNumber}/bid`}>
                         <div className='text-center py-2 px-5 w-full border border-[#9F13FB] text-[#9F13FB] rounded-full'>Consign with Us</div>
                     </Link>
-                    <div>
-                        {tags && tags.map((tag, index) => (
-                            <span key={index} className="inline-block bg-[#F7F7F7] text-[#0E0E0E] text-xs font-medium mr-2 mb-2 px-3 py-1 rounded-full">
-                                {tag}
-                            </span>
-                        ))}
-                    </div>
+                </div>
+                <div className='mt-5'>
+                    {tags && tags.map((tag, index) => (
+                        <span key={index} className="inline-block bg-[#F7F7F7] text-[#0E0E0E] text-xs font-medium mr-2 mb-2 px-3 py-1 rounded-full">
+                            {tag}
+                        </span>
+                    ))}
                 </div>
             </div>
         </div>
