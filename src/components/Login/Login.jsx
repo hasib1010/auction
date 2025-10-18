@@ -1,25 +1,52 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Eye, EyeOff } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import axios from 'axios'
+import { useUser } from '@/contexts/UserContext';
 
 export default function Login() {
+    const { setUser } = useUser();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const [accepted, setAccepted] = useState(false)
+    const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
+
+    const router = useRouter()
 
     const toggleShow = () => setShowPassword((show) => !show)
 
-    const onSubmit = (e) => {
-        e.preventDefault()
-        // TODO: wire up real auth
+
+    const onSubmit = async (e) => {
+        e.preventDefault();
+
         if (!accepted) {
-            alert('Please accept terms and conditions')
-            return
+            alert('Please accept terms and conditions');
+            return;
         }
-        console.log('login', { email, password })
+        setLoading(true);
+        setError('');
+        try {
+            const res = await axios.post('https://smbros-server.vercel.app/api/user/login', { email, password });
+            const response = res.data;
+            if (response.success) {
+                setUser(response.data);
+                setError('');
+                alert('Login successful!');
+                router.push('/');
+                return;
+            } else {
+                setError(response.message || 'Login failed');
+            }
+        } catch (err) {
+            setError('An error occurred: ' + (err.message || err));
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -31,6 +58,13 @@ export default function Login() {
                     </div>
 
                     <form onSubmit={onSubmit} className="space-y-4">
+                        {/* Display error message if login fails */}
+                        {error && (
+                            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded text-sm">
+                                {error}
+                            </div>
+                        )}
+
                         <div className="flex flex-col">
                             <label htmlFor="email" className="mb-2 text-sm font-semibold">Email Address</label>
                             <input
@@ -40,6 +74,7 @@ export default function Login() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="border border-[#E3E3E3] bg-[#F7F7F7] rounded px-3 py-2"
                                 required
+                                disabled={loading}
                             />
                         </div>
 
@@ -53,12 +88,14 @@ export default function Login() {
                                     onChange={(e) => setPassword(e.target.value)}
                                     className="w-full border border-[#E3E3E3] bg-[#F7F7F7] rounded px-3 py-2 pr-10"
                                     required
+                                    disabled={loading}
                                 />
                                 <button
                                     type="button"
                                     onClick={toggleShow}
                                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                                     className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500"
+                                    disabled={loading}
                                 >
                                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                 </button>
@@ -72,6 +109,7 @@ export default function Login() {
                                 checked={accepted}
                                 onChange={(e) => setAccepted(e.target.checked)}
                                 className="w-4 h-4"
+                                disabled={loading}
                             />
                             <label htmlFor="terms" className="text-sm">I accept the <span className='underline'>terms and conditions</span></label>
                         </div>
@@ -79,9 +117,10 @@ export default function Login() {
                         <div>
                             <button
                                 type="submit"
-                                className="w-full text-white py-2 rounded-full bg-gradient-to-br from-[#E95AFF] to-[#9F13FB]"
+                                disabled={loading}
+                                className="w-full text-white py-2 rounded-full bg-gradient-to-br from-[#E95AFF] to-[#9F13FB] disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                Login Now
+                                {loading ? 'Logging in...' : 'Login Now'}
                             </button>
                         </div>
 
@@ -95,12 +134,12 @@ export default function Login() {
                 </div>
             </div>
             <div style={{
-                backgroundImage: "url('\image 67.png')",
+                backgroundImage: "url('/image 67.png')",
                 backgroundPosition: 'center',
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
             }}>
             </div>
         </div>
-    )
-}
+        )
+    }

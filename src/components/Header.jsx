@@ -4,8 +4,11 @@ import React, { useState } from 'react';
 import { ShoppingCart, User, Search, Menu, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useUser } from '@/contexts/UserContext';
 
 const Header = () => {
+  const { user } = useUser();
+  // console.log("Current User:", user);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -50,12 +53,17 @@ const Header = () => {
 
                 {/* User action buttons */}
                 <div className="flex space-x-4 items-center">
-                  <button onClick={() => router.push('/login')} className='text-[#0E0E0E] text-[16px] font-semibold cursor-pointer'>
-                    Login
-                  </button>
-                  <button onClick={() => router.push('/signup')} className='text-white text-[16px] font-semibold px-6 py-3 rounded-full bg-[#0E0E0E] cursor-pointer'>
-                    Sign Up
-                  </button>
+                  {user ? <div>
+                    {user.firstName}
+                  </div> :
+                    <>
+                      <button onClick={() => router.push('/login')} className='text-[#0E0E0E] text-[16px] font-semibold cursor-pointer'>
+                        Login
+                      </button>
+                      <button onClick={() => router.push('/signup')} className='text-white text-[16px] font-semibold px-6 py-3 rounded-full bg-[#0E0E0E] cursor-pointer'>
+                        Sign Up
+                      </button>
+                    </>}
                   <button className="bg-white hover:bg-gray-50 rounded-full p-2.5 shadow-lg border border-gray-200 w-10 h-10 flex items-center justify-center transition-colors cursor-pointer">
                     <ShoppingCart className="w-5 h-5 text-gray-600" />
                   </button>
@@ -66,9 +74,9 @@ const Header = () => {
             {/* Mobile layout - visible only on mobile */}
             <div className="lg:hidden flex items-center justify-between w-full">
               {/* Logo on left */}
-               <Link href="/" className='text-2xl text-[#0E0E0E] font-bold mr-5 ml-4 cursor-pointer w-20'>
-                    <img src="/logo.png" alt="SMBros Logo" />
-                  </Link>
+              <Link href="/" className='text-2xl text-[#0E0E0E] font-bold mr-5 ml-4 cursor-pointer w-20'>
+                <img src="/logo.png" alt="SMBros Logo" />
+              </Link>
 
               {/* Hamburger button on right */}
               <button

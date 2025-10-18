@@ -1,4 +1,10 @@
+
 import React from "react";
+import {
+    CardNumberElement,
+    CardExpiryElement,
+    CardCvcElement,
+} from "@stripe/react-stripe-js";
 
 export default function Step5({ formData, handleInputChange }) {
     return (
@@ -20,10 +26,7 @@ export default function Step5({ formData, handleInputChange }) {
                     <label htmlFor="cardNumber" className="text-lg font-semibold text-[#0E0E0E] block mb-2">
                         Card Number
                     </label>
-                    <input
-                        type="text"
-                        value={formData.cardNumber}
-                        onChange={(e) => handleInputChange("cardNumber", e.target.value)}
+                    <CardNumberElement
                         className="w-full border border-[#E3E3E3] bg-[#F7F7F7] rounded p-2 focus:outline-none focus:ring-0"
                     />
                 </div>
@@ -32,42 +35,28 @@ export default function Step5({ formData, handleInputChange }) {
                         <label htmlFor="expiry" className="text-lg font-semibold text-[#0E0E0E] block mb-2">
                             Expiry
                         </label>
-                        <input
-                            type="text"
-                            placeholder="MM"
-                            value={formData.expiryMonth}
-                            onChange={(e) => handleInputChange("expiryMonth", e.target.value)}
-                            className="border border-[#E3E3E3] bg-[#F7F7F7] rounded p-2 focus:outline-none focus:ring-0 w-20"
-                        />
-                        <input
-                            type="text"
-                            placeholder="YY"
-                            value={formData.expiryYear}
-                            onChange={(e) => handleInputChange("expiryYear", e.target.value)}
-                            className="border border-[#E3E3E3] bg-[#F7F7F7] rounded p-2 focus:outline-none focus:ring-0 w-20"
+                        <CardExpiryElement
+                            className="w-full border border-[#E3E3E3] bg-[#F7F7F7] rounded p-2 focus:outline-none focus:ring-0"
                         />
                     </div>
                     <div>
                         <label htmlFor="CVC" className="text-lg font-semibold text-[#0E0E0E] block mb-2">
                             CVC
                         </label>
-                        <input
-                            type="text"
-                            value={formData.cvc}
-                            onChange={(e) => handleInputChange("cvc", e.target.value)}
-                            className="flex-1 border border-[#E3E3E3] bg-[#F7F7F7] rounded p-2 focus:outline-none focus:ring-0"
+                        <CardCvcElement
+                            className="w-full border border-[#E3E3E3] bg-[#F7F7F7] rounded p-2 focus:outline-none focus:ring-0"
                         />
                     </div>
                 </div>
 
-                <label className="flex items-center gap-2">
+                {/* <label className="flex items-center gap-2">
                     <input
                         type="checkbox"
                         checked={formData.autoInvoice}
                         onChange={(e) => handleInputChange("autoInvoice", e.target.checked)}
                     />
                     Auto Invoice Payment
-                </label>
+                </label> */}
             </div>
         </div>
     );

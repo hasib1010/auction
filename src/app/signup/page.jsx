@@ -7,6 +7,10 @@ import Step4 from '@/components/SignUp/Step4';
 import Step5 from '@/components/SignUp/Step5';
 import { useRouter } from 'next/navigation';
 
+
+import PaymentWrapper from '@/components/PaymentWrapper/paymentWrapper'; 
+
+
 export default function Page() {
     const router = useRouter();
     const [currentStep, setCurrentStep] = useState(1);
@@ -19,7 +23,6 @@ export default function Page() {
         phoneCode: '+44',
         phone: '',
         password: '',
-        confirmPassword: '',
         termsAccepted: false,
         newsAccepted: false,
         billingCountry: '',
@@ -33,12 +36,12 @@ export default function Page() {
         shippingAddressLine2: '',
         shippingCity: '',
         shippingPostcode: '',
-        cardHolderName: '',
-        cardNumber: '',
-        expiryMonth: '',
-        expiryYear: '',
-        cvc: '',
-        autoInvoice: false
+        // cardHolderName: '',
+        // cardNumber: '',
+        // expiryMonth: '',
+        // expiryYear: '',
+        // cvc: '',
+        // autoInvoice: false
     });
 
     const callingCodes = [
@@ -62,7 +65,6 @@ export default function Page() {
     const nextStep = () => setCurrentStep(s => Math.min(s + 1, totalSteps));
     const prevStep = () => setCurrentStep(s => Math.max(s - 1, 1));
 
-
     const StepIndicator = () => (
         <div className="flex items-center justify-between mb-8">
             {steps.map((step, index) => (
@@ -75,8 +77,7 @@ export default function Page() {
                                     ? "bg-purple-600 text-white border-purple-600"
                                     : currentStep === step.number
                                         ? "bg-white text-purple-600 border-purple-600"
-                                        : "bg-gray-200 text-gray-500 border-gray-200"}
-              `}
+                                        : "bg-gray-200 text-gray-500 border-gray-200"}`}
                         >
                             {step.title}
                         </div>
@@ -89,12 +90,15 @@ export default function Page() {
         </div>
     );
 
+    // 🟣 CHANGED: wrap Step5 inside PaymentWrapper for Stripe
     const stepContents = [
         <Step1 key="s1" formData={formData} handleInputChange={handleInputChange} />,
         <Step2 key="s2" formData={formData} handleInputChange={handleInputChange} callingCodes={callingCodes} />,
         <Step3 key="s3" formData={formData} handleInputChange={handleInputChange} />,
         <Step4 key="s4" formData={formData} handleInputChange={handleInputChange} />,
-        <Step5 key="s5" formData={formData} handleInputChange={handleInputChange} />
+        <PaymentWrapper key="s5">
+            <Step5 formData={formData} handleInputChange={handleInputChange} />
+        </PaymentWrapper>      
     ];
 
     const handleSubmit = () => {
