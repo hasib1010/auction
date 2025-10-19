@@ -34,14 +34,20 @@ export default function Login() {
             const res = await axios.post('https://smbros-server.vercel.app/api/user/login', { email, password });
             const response = res.data;
             if (response.success) {
-                setUser(response.data);
-                setError('');
-                alert('Login successful!');
-                router.push('/');
-                return;
+            const userData = response.data;
+            setUser(userData);
+            setError('');
+            alert('Login successful!');
+            if (userData.accountType === 'Admin') {
+                router.push('/cms/pannel');
             } else {
-                setError(response.message || 'Login failed');
+                router.push('/');
             }
+
+            return;
+        } else {
+            setError(response.message || 'Login failed');
+        }
         } catch (err) {
             setError('An error occurred: ' + (err.message || err));
         } finally {
