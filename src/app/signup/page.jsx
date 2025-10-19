@@ -6,6 +6,7 @@ import Step3 from '@/components/SignUp/Step3';
 import Step4 from '@/components/SignUp/Step4';
 import Step5 from '@/components/SignUp/Step5';
 import { useRouter } from 'next/navigation';
+import toast, { Toaster } from 'react-hot-toast';
 
 
 import PaymentWrapper from '@/components/PaymentWrapper/paymentWrapper'; 
@@ -103,7 +104,7 @@ export default function Page() {
 
     const handleSubmit = () => {
         console.log('Form submitted:', formData);
-        alert('Account created successfully!');
+        toast.success('Account created successfully!');
         router.push('/');
     };
 
@@ -151,6 +152,7 @@ export default function Page() {
                     backgroundRepeat: "no-repeat",
                 }}
             />
+            <Toaster />
         </div>
     );
 }

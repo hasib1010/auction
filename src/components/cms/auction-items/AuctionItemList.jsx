@@ -6,8 +6,6 @@ export default function AuctionItemList({ auctionItems, onEdit, onDelete, loadin
   const [deleteLoading, setDeleteLoading] = useState(null);
 
   const handleDelete = async (itemId) => {
-    if (!confirm('Are you sure you want to delete this auction item?')) return;
-
     setDeleteLoading(itemId);
     try {
       await onDelete(itemId);

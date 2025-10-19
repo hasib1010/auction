@@ -6,8 +6,6 @@ export default function CategoryList({ categories, onEdit, onDelete, loading }) 
   const [deleteLoading, setDeleteLoading] = useState(null);
 
   const handleDelete = async (categoryId) => {
-    if (!confirm('Are you sure you want to delete this category?')) return;
-
     setDeleteLoading(categoryId);
     try {
       await onDelete(categoryId);

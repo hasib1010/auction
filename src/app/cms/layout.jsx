@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useUser } from '@/contexts/UserContext';
 import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function CMSLayout({ children }) {
   const { user, setUser, fetchUser } = useUser();
@@ -26,11 +27,11 @@ export default function CMSLayout({ children }) {
         router.push('/login');
       } else {
         console.error('Logout failed:', res.data?.message);
-        alert('Logout failed');
+        toast.error('Logout failed');
       }
     } catch (err) {
       console.error('Logout error:', err.message);
-      alert('Logout failed');
+      toast.error('Logout failed');
     }
   };
 
@@ -110,6 +111,7 @@ export default function CMSLayout({ children }) {
           {children}
         </main>
       </div>
+      <Toaster />
     </div>
   );
 }
