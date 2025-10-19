@@ -6,12 +6,26 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useUser } from '@/contexts/UserContext';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
+import {
+  Home,
+  Folder,
+  Hammer,
+  Package,
+  Users,
+  Settings,
+  Menu,
+  X,
+  LogOut,
+  ChevronLeft,
+  ChevronRight
+} from 'lucide-react';
 
 export default function CMSLayout({ children }) {
   const { user, setUser, fetchUser } = useUser();
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -46,12 +60,12 @@ export default function CMSLayout({ children }) {
   }, [user, router]);
 
   const menuItems = [
-    { name: 'Dashboard', href: '/cms/pannel', icon: '🏠' },
-    { name: 'Categories', href: '/cms/pannel/categories', icon: '📁' },
-    { name: 'Auctions', href: '/cms/pannel/auctions', icon: '🔨' },
-    { name: 'Auction Items', href: '/cms/pannel/auction-items', icon: '📦' },
-    { name: 'Users', href: '/cms/pannel/users', icon: '👥' },
-    { name: 'Settings', href: '/cms/pannel/settings', icon: '⚙️' },
+    { name: 'Dashboard', href: '/cms/pannel', icon: Home },
+    { name: 'Categories', href: '/cms/pannel/categories', icon: Folder },
+    { name: 'Auctions', href: '/cms/pannel/auctions', icon: Hammer },
+    { name: 'Auction Items', href: '/cms/pannel/auction-items', icon: Package },
+    { name: 'Users', href: '/cms/pannel/users', icon: Users },
+    { name: 'Settings', href: '/cms/pannel/settings', icon: Settings },
   ];
 
   if (!user) {
@@ -63,52 +77,136 @@ export default function CMSLayout({ children }) {
   }
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-gray-50">
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <div className={`${sidebarOpen ? 'w-64' : 'w-16'} bg-white shadow-lg transition-all duration-300`}>
-        <div className="flex items-center justify-between p-4 border-b">
-          <h2 className={`font-bold text-xl ${!sidebarOpen && 'hidden'}`}>Admin CMS</h2>
+      <div className={`
+        fixed lg:static inset-y-0 left-0 z-50
+        ${sidebarOpen ? 'w-64' : 'w-16'}
+        bg-white shadow-xl border-r border-gray-200
+        transition-all duration-300 ease-in-out
+        ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+      `}>
+        <div className="flex items-center justify-between p-4 border-b border-gray-200">
+          <div className={`flex items-center space-x-3 ${!sidebarOpen && 'justify-center'}`}>
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">A</span>
+            </div>
+            {sidebarOpen && <h2 className="font-bold text-xl text-gray-800">Admin CMS</h2>}
+          </div>
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-1 rounded hover:bg-gray-200"
+            className="hidden lg:flex p-2 rounded-lg hover:bg-gray-100 transition-colors"
           >
-            {sidebarOpen ? '◀' : '▶'}
+            {sidebarOpen ? <ChevronLeft className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
+          </button>
+          <button
+            onClick={() => setMobileMenuOpen(false)}
+            className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+          >
+            <X className="w-5 h-5" />
           </button>
         </div>
-        <nav className="mt-4">
-          {menuItems.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className={`flex items-center px-4 py-3 text-gray-700 hover:bg-gray-200 transition-colors ${
-                pathname === item.href ? 'bg-blue-100 text-blue-700 border-r-4 border-blue-700' : ''
-              }`}
-            >
-              <span className="text-lg mr-3">{item.icon}</span>
-              {sidebarOpen && <span>{item.name}</span>}
-            </Link>
-          ))}
+
+        <nav className="mt-6 px-3">
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`
+                  flex items-center px-3 py-3 mb-1 rounded-xl transition-all duration-200
+                  ${isActive
+                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg'
+                    : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                  }
+                `}
+              >
+                <Icon className={`w-5 h-5 ${sidebarOpen ? 'mr-3' : 'mx-auto'}`} />
+                {sidebarOpen && (
+                  <span className="font-medium">{item.name}</span>
+                )}
+                {isActive && sidebarOpen && (
+                  <div className="ml-auto w-2 h-2 bg-white rounded-full" />
+                )}
+              </Link>
+            );
+          })}
         </nav>
+
+        {/* Logout Button */}
+        <div className="absolute bottom-4 left-3 right-3">
+          <button
+            onClick={handleLogout}
+            className={`
+              flex items-center w-full px-3 py-3 rounded-xl transition-all duration-200
+              text-red-600 hover:bg-red-50 hover:text-red-700
+              ${!sidebarOpen && 'justify-center'}
+            `}
+          >
+            <LogOut className={`w-5 h-5 ${sidebarOpen ? 'mr-3' : ''}`} />
+            {sidebarOpen && <span className="font-medium">Logout</span>}
+          </button>
+        </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Top Navbar */}
-        <header className="bg-white shadow-sm border-b px-6 py-4">
+        <header className="bg-white shadow-sm border-b border-gray-200 px-4 lg:px-6 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-semibold text-gray-800">Admin Panel</h1>
             <div className="flex items-center space-x-4">
-              <span className="text-gray-600">Welcome, {user?.firstName} {user?.lastName}</span>
-              <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                Logout
+              <button
+                onClick={() => setMobileMenuOpen(true)}
+                className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <Menu className="w-5 h-5" />
+              </button>
+              <h1 className="text-xl lg:text-2xl font-semibold text-gray-800">Admin Panel</h1>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="hidden md:flex items-center space-x-2">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                  <span className="text-white font-medium text-sm">
+                    {user?.firstName?.[0]}{user?.lastName?.[0]}
+                  </span>
+                </div>
+                <span className="text-gray-600 font-medium">
+                  {user?.firstName} {user?.lastName}
+                </span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="hidden md:flex bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-lg hover:from-red-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 font-medium shadow-sm hover:shadow-md transform hover:-translate-y-0.5 items-center space-x-2"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Logout</span>
+              </button>
+              <button
+                onClick={handleLogout}
+                className="md:hidden p-2 rounded-lg hover:bg-red-50 transition-all duration-200 text-red-600 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+              >
+                <LogOut className="w-5 h-5" />
               </button>
             </div>
           </div>
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-auto p-6">
-          {children}
+        <main className="flex-1 overflow-auto p-4 lg:p-6 bg-gray-50">
+          <div className="max-w-7xl mx-auto">
+            {children}
+          </div>
         </main>
       </div>
       <Toaster />
