@@ -4,12 +4,35 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useUser } from '@/contexts/UserContext';
+import axios from 'axios';
 
 export default function CMSLayout({ children }) {
-  const { user, fetchUser } = useUser();
+  const { user, setUser, fetchUser } = useUser();
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  const handleLogout = async () => {
+    try {
+      const res = await axios.post(
+        'http://localhost:8000/api/user/logout',
+        {},
+        { withCredentials: true }
+      );
+      if (res.data?.success) {
+        // Clear user state
+        setUser(null);
+        // Redirect to login
+        router.push('/login');
+      } else {
+        console.error('Logout failed:', res.data?.message);
+        alert('Logout failed');
+      }
+    } catch (err) {
+      console.error('Logout error:', err.message);
+      alert('Logout failed');
+    }
+  };
 
   useEffect(() => {
     fetchUser();
@@ -75,7 +98,7 @@ export default function CMSLayout({ children }) {
             <h1 className="text-2xl font-semibold text-gray-800">Admin Panel</h1>
             <div className="flex items-center space-x-4">
               <span className="text-gray-600">Welcome, {user?.firstName} {user?.lastName}</span>
-              <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+              <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                 Logout
               </button>
             </div>
