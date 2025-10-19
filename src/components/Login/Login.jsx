@@ -31,7 +31,7 @@ export default function Login() {
         setLoading(true);
         setError('');
         try {
-            const res = await axios.post('https://smbros-server.vercel.app/api/user/login', { email, password });
+            const res = await axios.post('http://localhost:8000/api/user/login', { email, password }, { withCredentials: true });
             const response = res.data;
             if (response.success) {
             const userData = response.data;

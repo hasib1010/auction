@@ -5,24 +5,26 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { ChevronLeft, ChevronRight, Eye, Calendar } from 'lucide-react';
 import Link from 'next/link';
+import axios from 'axios';
 
 // Memoized auction card component for better performance
 const AuctionCard = memo(({ item }) => {
-  const parseDate = (str) => {
-    if (!str) return null;
-    const match = str.match(/(\d+)\w*\s+([A-Za-z]+)\s+(\d{4}),\s+(\d+):(\d+)(AM|PM)/);
-    if (!match) return null;
+  // const parseDate = (str) => {
+  //   if (!str) return null;
+  //   const match = str.match(/(\d+)\w*\s+([A-Za-z]+)\s+(\d{4}),\s+(\d+):(\d+)(AM|PM)/);
+  //   if (!match) return null;
 
-    const [_, day, month, year, hour, minute, meridiem] = match;
-    let hours = parseInt(hour);
-    if (meridiem === 'PM' && hours !== 12) hours += 12;
-    if (meridiem === 'AM' && hours === 12) hours = 0;
+  //   const [_, day, month, year, hour, minute, meridiem] = match;
+  //   let hours = parseInt(hour);
+  //   if (meridiem === 'PM' && hours !== 12) hours += 12;
+  //   if (meridiem === 'AM' && hours === 12) hours = 0;
 
-    const dateStr = `${month} ${day}, ${year} ${hours.toString().padStart(2, '0')}:${minute}:00`;
-    return new Date(dateStr);
-  };
+  //   const dateStr = `${month} ${day}, ${year} ${hours.toString().padStart(2, '0')}:${minute}:00`;
+  //   return new Date(dateStr);
+  // };
 
-  const endDate = parseDate(item.biddingEnds);
+  // Use createdAt as bidding end date for now, or you can adjust based on your API
+  const endDate = item.createdAt ? new Date(item.createdAt) : null;
   const now = new Date();
   const isToday = endDate?.toDateString() === now.toDateString();
   const isPast = endDate && endDate < now && !isToday;
@@ -33,8 +35,8 @@ const AuctionCard = memo(({ item }) => {
         {/* Image with lazy loading */}
         <div className="aspect-square rounded-[14px] bg-gray-100 overflow-hidden">
           <img
-            src={item.imagePath}
-            alt={item.imageAlt}
+            src={item.productImages && item.productImages.length > 0 ? item.productImages[0].url : '/placeholder.jpg'}
+            alt={item.productImages && item.productImages.length > 0 ? item.productImages[0].altText : item.name}
             className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
             loading="lazy"
             draggable={false}
@@ -44,7 +46,7 @@ const AuctionCard = memo(({ item }) => {
         {/* Content */}
         <div className="p-2 sm:p-3 lg:p-4">
           <h3 className="font-semibold text-gray-700 text-xs sm:text-sm lg:text-base xl:text-lg mb-2 line-clamp-2 leading-tight min-h-[2rem] sm:min-h-[2.5rem] lg:min-h-[3rem]">
-            {item.title}
+            {item.name}
           </h3>
 
           <div className="flex flex-col gap-2 mb-3">
@@ -70,7 +72,7 @@ const AuctionCard = memo(({ item }) => {
                 }
               </span>
               <span className="text-xs text-gray-600 font-medium">
-                {item.biddingEnds}
+                {endDate ? endDate.toLocaleDateString() : 'N/A'}
               </span>
             </div>
           </div>
@@ -86,7 +88,7 @@ const AuctionCard = memo(({ item }) => {
             >
               {isPast ? 'Auction Closed' : 'Bid Now'}
             </button>
-            <Link href={`/auction/${item.lotNumber}/details`}>
+            <Link href={`/auction/${item.id}/details`}>
               <button className="flex items-center justify-center bg-[#F7F7F7] rounded-full p-3 border border-[#E3E3E3] hover:border-purple-600 text-gray-400 hover:text-purple-600 hover:bg-purple-50 transition-all duration-200 hover:scale-110">
                 <Eye size={12} className="sm:w-4 sm:h-4" />
               </button>
@@ -106,24 +108,34 @@ AuctionCard.displayName = 'AuctionCard';
 const AuctionItemsCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('/data.json')
-      .then((res) => res.json())
-      .then((json) => setData(json))
-      .catch((err) => console.error('Error loading data.json:', err));
+    const fetchAuctionItems = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get('http://localhost:8000/api/auction-item', { withCredentials: true });
+        if (response.data.success) {
+          setData(response.data.data);
+        } else {
+          setError('Failed to fetch auction items');
+        }
+      } catch (err) {
+        console.error('Error fetching auction items:', err);
+        if (err.response && err.response.status === 401) {
+          window.location.href = '/login';
+        } else {
+          setError('Failed to load auction items');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAuctionItems();
   }, []);
 
-  // const auctionItems = [
-  //   { id: 1, title: "LEGO Super Heroes The Batcave 6860", image: "Rectangle 662.png", status: "Live", endTime: "17/5/2025, 2:00pm" },
-  //   { id: 2, title: "Dungeons & Dragons - Starter Set: Heroes of The...", image: "Rectangle 662 (3).png", status: "Live", endTime: "17/5/2025, 2:00pm" },
-  //   { id: 3, title: "Marvel Super Hero Trainer - Interactive Fitness Toy for...", image: "Rectangle 662 (1).png", status: "Upcoming", endTime: "17/5/2025, 2:00pm" },
-  //   { id: 4, title: "LEGO Super Heroes The Batcave 6860", image: "Rectangle 662.png", status: "Live", endTime: "17/5/2025, 2:00pm" },
-  //   { id: 5, title: "Pokemon Trading Cards Collection", image: "Rectangle 662 (2).png", status: "Live", endTime: "18/5/2025, 3:00pm" },
-  //   { id: 6, title: "Vintage Action Figures Set", image: "Rectangle 662.png", status: "Upcoming", endTime: "19/5/2025, 1:00pm" },
-  //   { id: 7, title: "Board Game Collection", image: "Rectangle 662.png", status: "Live", endTime: "20/5/2025, 4:00pm" },
-  //   { id: 8, title: "Comic Books Bundle", image: "Rectangle 662.png", status: "Upcoming", endTime: "21/5/2025, 2:30pm" }
-  // ];
 
   // Optimized responsive breakpoints
   const responsive = {
@@ -255,12 +267,22 @@ const AuctionItemsCarousel = () => {
             rewindWithAnimation={false}
           >
             {
-              data && data.length > 0 ? (
+              loading ? (
+                <div className="flex justify-center items-center h-64">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+                </div>
+              ) : error ? (
+                <div className="flex justify-center items-center h-64">
+                  <p className="text-red-500">{error}</p>
+                </div>
+              ) : data && data.length > 0 ? (
                 data.slice(0, 10).map(item => (
-                  <AuctionCard key={item.lotNumber} item={item} />
+                  <AuctionCard key={item.id} item={item} />
                 ))
               ) : (
-                <p>No similar items found.</p>
+                <div className="flex justify-center items-center h-64">
+                  <p>No auction items found.</p>
+                </div>
               )
             }
           </Carousel>
