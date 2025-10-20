@@ -91,7 +91,7 @@ export default function Step5({
               disabled={!stripe || isProcessing}
               className="w-full mt-4 px-6 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
             >
-              {isProcessing ? "Processing..." : "Complete Payment"}
+              {isProcessing ? "Processing..." : "Complete Registration"}
             </button>
           </form>
         ) : (
