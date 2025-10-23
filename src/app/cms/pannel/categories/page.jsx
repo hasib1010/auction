@@ -1,76 +1,51 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useUser } from '@/contexts/UserContext';
+import { Button } from '@/components/ui/button';
 import CategoryForm from '@/components/cms/category/CategoryForm';
 import CategoryList from '@/components/cms/category/CategoryList';
 
 export default function CategoriesPage() {
   const { user } = useUser();
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    if (user) {
-      fetchCategories();
-    }
-  }, [user]);
-
-  const fetchCategories = async () => {
-    setLoading(true);
-    try {
+  const { data: categories = [], isLoading: loading } = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
       const res = await axios.get('http://localhost:8000/api/category', { withCredentials: true });
-      if (res.data.success) {
-        setCategories(res.data.data);
-      }
-    } catch (err) {
-      console.error('Error fetching categories:', err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+      return res.data.success ? res.data.data : [];
+    },
+    enabled: !!user,
+  });
 
-  const createCategory = async (categoryData) => {
-    try {
-      const res = await axios.post('http://localhost:8000/api/category', categoryData, { withCredentials: true });
-      if (res.data.success) {
-        await fetchCategories();
-        setShowForm(false);
-      }
-    } catch (err) {
-      console.error('Error creating category:', err.message);
-      throw err;
-    }
-  };
+  const createMutation = useMutation({
+    mutationFn: (categoryData) => axios.post('http://localhost:8000/api/category', categoryData, { withCredentials: true }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      setShowForm(false);
+    },
+  });
 
-  const updateCategory = async (categoryData) => {
-    try {
-      const res = await axios.put(`http://localhost:8000/api/category/${editingCategory.id}`, categoryData, { withCredentials: true });
-      if (res.data.success) {
-        await fetchCategories();
-        setEditingCategory(null);
-        setShowForm(false);
-      }
-    } catch (err) {
-      console.error('Error updating category:', err.message);
-      throw err;
-    }
-  };
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }) => axios.put(`http://localhost:8000/api/category/${id}`, data, { withCredentials: true }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      setEditingCategory(null);
+      setShowForm(false);
+    },
+  });
 
-  const deleteCategory = async (categoryId) => {
-    try {
-      const res = await axios.delete(`http://localhost:8000/api/category/${categoryId}`, { withCredentials: true });
-      if (res.data.success) {
-        await fetchCategories();
-      }
-    } catch (err) {
-      console.error('Error deleting category:', err.message);
-      throw err;
-    }
-  };
+  const deleteMutation = useMutation({
+    mutationFn: (categoryId) => axios.delete(`http://localhost:8000/api/category/${categoryId}`, { withCredentials: true }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+    },
+  });
 
   const handleEdit = (category) => {
     setEditingCategory(category);
@@ -79,9 +54,9 @@ export default function CategoriesPage() {
 
   const handleFormSubmit = async (categoryData) => {
     if (editingCategory) {
-      await updateCategory(categoryData);
+      updateMutation.mutate({ id: editingCategory.id, data: categoryData });
     } else {
-      await createCategory(categoryData);
+      createMutation.mutate(categoryData);
     }
   };
 
@@ -98,12 +73,12 @@ export default function CategoriesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">Categories Management</h1>
-        <button
+        <Button
           onClick={() => setShowForm(!showForm)}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="bg-blue-500 hover:bg-blue-600"
         >
           {showForm ? 'Cancel' : 'Add New Category'}
-        </button>
+        </Button>
       </div>
 
       {showForm && (
@@ -117,7 +92,7 @@ export default function CategoriesPage() {
       <CategoryList
         categories={categories}
         onEdit={handleEdit}
-        onDelete={deleteCategory}
+        onDelete={(id) => deleteMutation.mutate(id)}
         loading={loading}
       />
     </div>

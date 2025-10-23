@@ -1,76 +1,51 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useUser } from '@/contexts/UserContext';
+import { Button } from '@/components/ui/button';
 import AuctionItemForm from '@/components/cms/auction-items/AuctionItemForm';
 import AuctionItemList from '@/components/cms/auction-items/AuctionItemList';
 
 export default function AuctionItemsPage() {
   const { user } = useUser();
-  const [auctionItems, setAuctionItems] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    if (user) {
-      fetchAuctionItems();
-    }
-  }, [user]);
-
-  const fetchAuctionItems = async () => {
-    setLoading(true);
-    try {
+  const { data: auctionItems = [], isLoading: loading } = useQuery({
+    queryKey: ['auction-items'],
+    queryFn: async () => {
       const res = await axios.get('http://localhost:8000/api/auction-item', { withCredentials: true });
-      if (res.data.success) {
-        setAuctionItems(res.data.data);
-      }
-    } catch (err) {
-      console.error('Error fetching auction items:', err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+      return res.data.success ? res.data.data : [];
+    },
+    enabled: !!user,
+  });
 
-  const createAuctionItem = async (itemData) => {
-    try {
-      const res = await axios.post('http://localhost:8000/api/auction-item', itemData, { withCredentials: true });
-      if (res.data.success) {
-        await fetchAuctionItems();
-        setShowForm(false);
-      }
-    } catch (err) {
-      console.error('Error creating auction item:', err.message);
-      throw err;
-    }
-  };
+  const createMutation = useMutation({
+    mutationFn: (itemData) => axios.post('http://localhost:8000/api/auction-item', itemData, { withCredentials: true }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['auction-items'] });
+      setShowForm(false);
+    },
+  });
 
-  const updateAuctionItem = async (itemData) => {
-    try {
-      const res = await axios.put(`http://localhost:8000/api/auction-item/${editingItem.id}`, itemData, { withCredentials: true });
-      if (res.data.success) {
-        await fetchAuctionItems();
-        setEditingItem(null);
-        setShowForm(false);
-      }
-    } catch (err) {
-      console.error('Error updating auction item:', err.message);
-      throw err;
-    }
-  };
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }) => axios.put(`http://localhost:8000/api/auction-item/${id}`, data, { withCredentials: true }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['auction-items'] });
+      setEditingItem(null);
+      setShowForm(false);
+    },
+  });
 
-  const deleteAuctionItem = async (itemId) => {
-    try {
-      const res = await axios.delete(`http://localhost:8000/api/auction-item/${itemId}`, { withCredentials: true });
-      if (res.data.success) {
-        await fetchAuctionItems();
-      }
-    } catch (err) {
-      console.error('Error deleting auction item:', err.message);
-      throw err;
-    }
-  };
+  const deleteMutation = useMutation({
+    mutationFn: (itemId) => axios.delete(`http://localhost:8000/api/auction-item/${itemId}`, { withCredentials: true }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['auction-items'] });
+    },
+  });
 
   const handleEdit = (item) => {
     setEditingItem(item);
@@ -79,9 +54,9 @@ export default function AuctionItemsPage() {
 
   const handleFormSubmit = async (itemData) => {
     if (editingItem) {
-      await updateAuctionItem(itemData);
+      updateMutation.mutate({ id: editingItem.id, data: itemData });
     } else {
-      await createAuctionItem(itemData);
+      createMutation.mutate(itemData);
     }
   };
 
@@ -98,12 +73,12 @@ export default function AuctionItemsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">Auction Items Management</h1>
-        <button
+        <Button
           onClick={() => setShowForm(!showForm)}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="bg-blue-500 hover:bg-blue-600"
         >
           {showForm ? 'Cancel' : 'Add New Auction Item'}
-        </button>
+        </Button>
       </div>
 
       {showForm && (
@@ -117,7 +92,7 @@ export default function AuctionItemsPage() {
       <AuctionItemList
         auctionItems={auctionItems}
         onEdit={handleEdit}
-        onDelete={deleteAuctionItem}
+        onDelete={(id) => deleteMutation.mutate(id)}
         loading={loading}
       />
     </div>

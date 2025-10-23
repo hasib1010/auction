@@ -1,34 +1,21 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useUser } from '@/contexts/UserContext';
 import UserList from "@/components/cms/users/UserList"
 
 export default function Users(){
     const { user } = useUser();
-    const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        if (user) {
-            fetchUsers();
-        }
-    }, [user]);
-
-    const fetchUsers = async () => {
-        setLoading(true);
-        try {
+    const { data: users = [], isLoading: loading } = useQuery({
+        queryKey: ['users'],
+        queryFn: async () => {
             const res = await axios.get('http://localhost:8000/api/user', { withCredentials: true });
-            if (res.data.success) {
-                setUsers(res.data.data);
-            }
-        } catch (err) {
-            console.error('Error fetching users:', err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
+            return res.data.success ? res.data.data : [];
+        },
+        enabled: !!user,
+    });
 
     if (!user) {
         return <div>Loading...</div>;
