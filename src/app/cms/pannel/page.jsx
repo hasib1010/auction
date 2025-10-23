@@ -1,5 +1,8 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+
 export default function Pannel() {
   return (
     <div className="min-h-screen bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-400 flex flex-col items-center justify-center p-8 space-y-10">
@@ -17,15 +20,28 @@ export default function Pannel() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
         <div className="bg-white rounded-3xl p-6 shadow-xl hover:scale-105 transition-all duration-500 animate-bounce-slow">
           <h2 className="text-xl font-bold text-purple-600 mb-2">👑 Users</h2>
-          <p className="text-gray-600">Check on your minions… I mean, users. They are plotting something.</p>
+          <p className="text-gray-600 mb-4">Check on your minions… I mean, users. They are plotting something.</p>
+          <Link href="/cms/pannel/users">
+            <Button variant="outline" className="w-full">
+              Manage Users
+            </Button>
+          </Link>
         </div>
         <div className="bg-white rounded-3xl p-6 shadow-xl hover:scale-105 transition-all duration-500 animate-spin-slow">
           <h2 className="text-xl font-bold text-pink-600 mb-2">💰 Auctions</h2>
-          <p className="text-gray-600">Keep those bids coming! Someone’s trying to get rich fast.</p>
+          <p className="text-gray-600 mb-4">Keep those bids coming! Someone's trying to get rich fast.</p>
+          <Link href="/cms/pannel/auctions">
+            <Button variant="outline" className="w-full">
+              Manage Auctions
+            </Button>
+          </Link>
         </div>
         <div className="bg-white rounded-3xl p-6 shadow-xl hover:scale-105 transition-all duration-500 animate-ping-slow">
           <h2 className="text-xl font-bold text-yellow-600 mb-2">📈 Analytics</h2>
-          <p className="text-gray-600">Charts, graphs… and occasional magic. Watch your empire grow!</p>
+          <p className="text-gray-600 mb-4">Charts, graphs… and occasional magic. Watch your empire grow!</p>
+          <Button variant="outline" className="w-full" disabled>
+            Coming Soon
+          </Button>
         </div>
       </div>
 

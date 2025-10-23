@@ -20,6 +20,15 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu"
 
 export default function CMSLayout({ children }) {
   const { user, setUser, fetchUser } = useUser();
@@ -117,32 +126,37 @@ export default function CMSLayout({ children }) {
         </div>
 
         <nav className="mt-6 px-3">
-          {menuItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = pathname === item.href;
-            return (
-              <Link
-                key={item.name}
-                href={item.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`
-                  flex items-center px-3 py-3 mb-1 rounded-xl transition-all duration-200
-                  ${isActive
-                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg'
-                    : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
-                  }
-                `}
-              >
-                <Icon className={`w-5 h-5 ${sidebarOpen ? 'mr-3' : 'mx-auto'}`} />
-                {sidebarOpen && (
-                  <span className="font-medium">{item.name}</span>
-                )}
-                {isActive && sidebarOpen && (
-                  <div className="ml-auto w-2 h-2 bg-white rounded-full" />
-                )}
-              </Link>
-            );
-          })}
+          <NavigationMenu orientation="vertical">
+            <NavigationMenuList className="flex-col space-y-1">
+              {menuItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = pathname === item.href;
+                return (
+                  <NavigationMenuItem key={item.name}>
+                    <Link
+                      href={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`
+                        flex items-center px-3 py-3 mb-1 rounded-xl transition-all duration-200
+                        ${isActive
+                          ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg'
+                          : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                        }
+                      `}
+                    >
+                      <Icon className={`w-5 h-5 ${sidebarOpen ? 'mr-3' : 'mx-auto'}`} />
+                      {sidebarOpen && (
+                        <span className="font-medium">{item.name}</span>
+                      )}
+                      {isActive && sidebarOpen && (
+                        <div className="ml-auto w-2 h-2 bg-white rounded-full" />
+                      )}
+                    </Link>
+                  </NavigationMenuItem>
+                );
+              })}
+            </NavigationMenuList>
+          </NavigationMenu>
         </nav>
 
         {/* Logout Button */}
