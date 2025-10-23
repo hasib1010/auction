@@ -189,9 +189,9 @@ export default function CMSLayout({ children }) {
               <h1 className="text-xl lg:text-2xl font-semibold text-gray-800 truncate">Admin Panel</h1>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="hidden md:flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-white font-medium text-sm">
+              <div className="hidden md:flex items-center space-x-3">
+                <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-gray-600 font-medium text-sm">
                     {user?.firstName?.[0]}{user?.lastName?.[0]}
                   </span>
                 </div>
@@ -201,14 +201,14 @@ export default function CMSLayout({ children }) {
               </div>
               <button
                 onClick={handleLogout}
-                className="hidden md:flex bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-lg hover:from-red-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 font-medium shadow-sm hover:shadow-md transform hover:-translate-y-0.5 items-center space-x-2 flex-shrink-0"
+                className="hidden md:flex border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200 font-medium items-center space-x-2 flex-shrink-0"
               >
                 <LogOut className="w-4 h-4" />
                 <span>Logout</span>
               </button>
               <button
                 onClick={handleLogout}
-                className="md:hidden p-2 rounded-lg hover:bg-red-50 transition-all duration-200 text-red-600 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 shadow-sm hover:shadow-md transform hover:-translate-y-0.5 flex-shrink-0"
+                className="md:hidden p-2 rounded-lg hover:bg-gray-50 transition-all duration-200 text-gray-600 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 flex-shrink-0"
               >
                 <LogOut className="w-5 h-5" />
               </button>
