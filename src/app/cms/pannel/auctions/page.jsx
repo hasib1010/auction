@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useUser } from '@/contexts/UserContext';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import AuctionForm from '@/components/cms/auction/AuctionForm';
 import AuctionList from '@/components/cms/auction/AuctionList';
 import { API_BASE_URL } from '@/lib/api';
@@ -12,7 +13,7 @@ import { API_BASE_URL } from '@/lib/api';
 export default function AuctionsPage() {
   const { user } = useUser();
   const [editingAuction, setEditingAuction] = useState(null);
-  const [showForm, setShowForm] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const queryClient = useQueryClient();
 
   const { data: auctions = [], isLoading: loading } = useQuery({
@@ -28,7 +29,7 @@ export default function AuctionsPage() {
     mutationFn: (auctionData) => axios.post(`${API_BASE_URL}/auction`, auctionData, { withCredentials: true }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['auctions'] });
-      setShowForm(false);
+      setIsDialogOpen(false);
     },
   });
 
@@ -37,7 +38,7 @@ export default function AuctionsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['auctions'] });
       setEditingAuction(null);
-      setShowForm(false);
+      setIsDialogOpen(false);
     },
   });
 
@@ -50,7 +51,7 @@ export default function AuctionsPage() {
 
   const handleEdit = (auction) => {
     setEditingAuction(auction);
-    setShowForm(true);
+    setIsDialogOpen(true);
   };
 
   const handleFormSubmit = async (auctionData) => {
@@ -61,9 +62,9 @@ export default function AuctionsPage() {
     }
   };
 
-  const handleCancel = () => {
+  const handleDialogClose = () => {
     setEditingAuction(null);
-    setShowForm(false);
+    setIsDialogOpen(false);
   };
 
   if (!user) {
@@ -74,21 +75,26 @@ export default function AuctionsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">Auctions Management</h1>
-        <Button
-          onClick={() => setShowForm(!showForm)}
-          className="bg-blue-500 hover:bg-blue-600"
-        >
-          {showForm ? 'Cancel' : 'Add New Auction'}
-        </Button>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button className="bg-blue-500 hover:bg-blue-600">
+              Add New Auction
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>
+                {editingAuction ? 'Edit Auction' : 'Create New Auction'}
+              </DialogTitle>
+            </DialogHeader>
+            <AuctionForm
+              onSubmit={handleFormSubmit}
+              initialData={editingAuction || {}}
+              isEditing={!!editingAuction}
+            />
+          </DialogContent>
+        </Dialog>
       </div>
-
-      {showForm && (
-        <AuctionForm
-          onSubmit={handleFormSubmit}
-          initialData={editingAuction || {}}
-          isEditing={!!editingAuction}
-        />
-      )}
 
       <AuctionList
         auctions={auctions}

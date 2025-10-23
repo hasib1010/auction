@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useUser } from '@/contexts/UserContext';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import CategoryForm from '@/components/cms/category/CategoryForm';
 import CategoryList from '@/components/cms/category/CategoryList';
 import { API_BASE_URL } from '@/lib/api';
@@ -12,7 +13,7 @@ import { API_BASE_URL } from '@/lib/api';
 export default function CategoriesPage() {
   const { user } = useUser();
   const [editingCategory, setEditingCategory] = useState(null);
-  const [showForm, setShowForm] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const queryClient = useQueryClient();
 
   const { data: categories = [], isLoading: loading } = useQuery({
@@ -28,7 +29,7 @@ export default function CategoriesPage() {
     mutationFn: (categoryData) => axios.post(`${API_BASE_URL}/category`, categoryData, { withCredentials: true }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
-      setShowForm(false);
+      setIsDialogOpen(false);
     },
   });
 
@@ -37,7 +38,7 @@ export default function CategoriesPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
       setEditingCategory(null);
-      setShowForm(false);
+      setIsDialogOpen(false);
     },
   });
 
@@ -50,7 +51,7 @@ export default function CategoriesPage() {
 
   const handleEdit = (category) => {
     setEditingCategory(category);
-    setShowForm(true);
+    setIsDialogOpen(true);
   };
 
   const handleFormSubmit = async (categoryData) => {
@@ -61,9 +62,9 @@ export default function CategoriesPage() {
     }
   };
 
-  const handleCancel = () => {
+  const handleDialogClose = () => {
     setEditingCategory(null);
-    setShowForm(false);
+    setIsDialogOpen(false);
   };
 
   if (!user) {
@@ -74,21 +75,26 @@ export default function CategoriesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">Categories Management</h1>
-        <Button
-          onClick={() => setShowForm(!showForm)}
-          className="bg-blue-500 hover:bg-blue-600"
-        >
-          {showForm ? 'Cancel' : 'Add New Category'}
-        </Button>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button className="bg-blue-500 hover:bg-blue-600">
+              Add New Category
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>
+                {editingCategory ? 'Edit Category' : 'Create New Category'}
+              </DialogTitle>
+            </DialogHeader>
+            <CategoryForm
+              onSubmit={handleFormSubmit}
+              initialData={editingCategory || {}}
+              isEditing={!!editingCategory}
+            />
+          </DialogContent>
+        </Dialog>
       </div>
-
-      {showForm && (
-        <CategoryForm
-          onSubmit={handleFormSubmit}
-          initialData={editingCategory || {}}
-          isEditing={!!editingCategory}
-        />
-      )}
 
       <CategoryList
         categories={categories}
