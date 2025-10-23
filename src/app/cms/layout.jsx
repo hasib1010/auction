@@ -103,6 +103,7 @@ export default function CMSLayout({ children }) {
         bg-white shadow-xl border-r border-gray-200
         transition-all duration-300 ease-in-out
         ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        overflow-hidden
       `}>
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
           <div className={`flex items-center space-x-3 ${!sidebarOpen && 'justify-center'}`}>
@@ -126,37 +127,35 @@ export default function CMSLayout({ children }) {
         </div>
 
         <nav className="mt-6 px-3">
-          <NavigationMenu orientation="vertical">
-            <NavigationMenuList className="flex-col space-y-1">
-              {menuItems.map((item) => {
-                const Icon = item.icon;
-                const isActive = pathname === item.href;
-                return (
-                  <NavigationMenuItem key={item.name}>
-                    <Link
-                      href={item.href}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={`
-                        flex items-center px-3 py-3 mb-1 rounded-xl transition-all duration-200
-                        ${isActive
-                          ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg'
-                          : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
-                        }
-                      `}
-                    >
-                      <Icon className={`w-5 h-5 ${sidebarOpen ? 'mr-3' : 'mx-auto'}`} />
-                      {sidebarOpen && (
-                        <span className="font-medium">{item.name}</span>
-                      )}
-                      {isActive && sidebarOpen && (
-                        <div className="ml-auto w-2 h-2 bg-white rounded-full" />
-                      )}
-                    </Link>
-                  </NavigationMenuItem>
-                );
-              })}
-            </NavigationMenuList>
-          </NavigationMenu>
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`
+                  flex items-center justify-start px-3 py-3 mb-1 rounded-xl transition-all duration-200
+                  ${isActive
+                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg'
+                    : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                  }
+                  ${sidebarOpen ? 'justify-start' : 'justify-center'}
+                `}
+              >
+                <Icon className="w-5 h-5 flex-shrink-0" />
+                {sidebarOpen && (
+                  <>
+                    <span className="font-medium ml-3">{item.name}</span>
+                    {isActive && (
+                      <div className="ml-auto w-2 h-2 bg-white rounded-full" />
+                    )}
+                  </>
+                )}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Logout Button */}
@@ -164,19 +163,19 @@ export default function CMSLayout({ children }) {
           <button
             onClick={handleLogout}
             className={`
-              flex items-center w-full px-3 py-3 rounded-xl transition-all duration-200
+              flex items-center justify-start w-full px-3 py-3 rounded-xl transition-all duration-200
               text-red-600 hover:bg-red-50 hover:text-red-700
-              ${!sidebarOpen && 'justify-center'}
+              ${sidebarOpen ? 'justify-start' : 'justify-center'}
             `}
           >
-            <LogOut className={`w-5 h-5 ${sidebarOpen ? 'mr-3' : ''}`} />
-            {sidebarOpen && <span className="font-medium">Logout</span>}
+            <LogOut className="w-5 h-5 flex-shrink-0" />
+            {sidebarOpen && <span className="font-medium ml-3">Logout</span>}
           </button>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${sidebarOpen ? 'lg:ml-0' : 'lg:ml-0'}`}>
         {/* Top Navbar */}
         <header className="bg-white shadow-sm border-b border-gray-200 px-4 lg:px-6 py-4">
           <div className="flex items-center justify-between">
@@ -187,29 +186,29 @@ export default function CMSLayout({ children }) {
               >
                 <Menu className="w-5 h-5" />
               </button>
-              <h1 className="text-xl lg:text-2xl font-semibold text-gray-800">Admin Panel</h1>
+              <h1 className="text-xl lg:text-2xl font-semibold text-gray-800 truncate">Admin Panel</h1>
             </div>
             <div className="flex items-center space-x-4">
               <div className="hidden md:flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
                   <span className="text-white font-medium text-sm">
                     {user?.firstName?.[0]}{user?.lastName?.[0]}
                   </span>
                 </div>
-                <span className="text-gray-600 font-medium">
+                <span className="text-gray-600 font-medium truncate max-w-32">
                   {user?.firstName} {user?.lastName}
                 </span>
               </div>
               <button
                 onClick={handleLogout}
-                className="hidden md:flex bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-lg hover:from-red-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 font-medium shadow-sm hover:shadow-md transform hover:-translate-y-0.5 items-center space-x-2"
+                className="hidden md:flex bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-lg hover:from-red-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 font-medium shadow-sm hover:shadow-md transform hover:-translate-y-0.5 items-center space-x-2 flex-shrink-0"
               >
                 <LogOut className="w-4 h-4" />
                 <span>Logout</span>
               </button>
               <button
                 onClick={handleLogout}
-                className="md:hidden p-2 rounded-lg hover:bg-red-50 transition-all duration-200 text-red-600 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+                className="md:hidden p-2 rounded-lg hover:bg-red-50 transition-all duration-200 text-red-600 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 shadow-sm hover:shadow-md transform hover:-translate-y-0.5 flex-shrink-0"
               >
                 <LogOut className="w-5 h-5" />
               </button>
@@ -219,7 +218,7 @@ export default function CMSLayout({ children }) {
 
         {/* Page Content */}
         <main className="flex-1 overflow-auto p-4 lg:p-6 bg-gray-50">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-7xl mx-auto w-full">
             {children}
           </div>
         </main>
