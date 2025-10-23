@@ -6,24 +6,11 @@ import 'react-multi-carousel/lib/styles.css';
 import { ChevronLeft, ChevronRight, Eye, Calendar } from 'lucide-react';
 import Link from 'next/link';
 import axios from 'axios';
+import { API_BASE_URL } from '@/lib/api';
 
 // Memoized auction card component for better performance
 const AuctionCard = memo(({ item }) => {
-  // const parseDate = (str) => {
-  //   if (!str) return null;
-  //   const match = str.match(/(\d+)\w*\s+([A-Za-z]+)\s+(\d{4}),\s+(\d+):(\d+)(AM|PM)/);
-  //   if (!match) return null;
 
-  //   const [_, day, month, year, hour, minute, meridiem] = match;
-  //   let hours = parseInt(hour);
-  //   if (meridiem === 'PM' && hours !== 12) hours += 12;
-  //   if (meridiem === 'AM' && hours === 12) hours = 0;
-
-  //   const dateStr = `${month} ${day}, ${year} ${hours.toString().padStart(2, '0')}:${minute}:00`;
-  //   return new Date(dateStr);
-  // };
-
-  // Use createdAt as bidding end date for now, or you can adjust based on your API
   const endDate = item.createdAt ? new Date(item.createdAt) : null;
   const now = new Date();
   const isToday = endDate?.toDateString() === now.toDateString();
@@ -115,7 +102,7 @@ const AuctionItemsCarousel = () => {
     const fetchAuctionItems = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:8000/api/auction-item', { withCredentials: true });
+        const response = await axios.get(`${API_BASE_URL}/auction-item`, { withCredentials: true });
         if (response.data.success) {
           setData(response.data.data);
         } else {

@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '@/lib/api';
 
 const UserContext = createContext();
 
@@ -10,7 +11,7 @@ export function UserProvider({ children }) {
 
   const fetchUser = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/user/me', { withCredentials: true });
+      const res = await axios.get(`${API_BASE_URL}/user/me`, { withCredentials: true });
       if (res.data.success) {
         setUser(res.data.data);
       } else {

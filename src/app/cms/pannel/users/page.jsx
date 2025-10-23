@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useUser } from '@/contexts/UserContext';
 import UserList from "@/components/cms/users/UserList"
+import { API_BASE_URL } from '@/lib/api';
 
 export default function Users(){
     const { user } = useUser();
@@ -11,7 +12,7 @@ export default function Users(){
     const { data: users = [], isLoading: loading } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
-            const res = await axios.get('http://localhost:8000/api/user', { withCredentials: true });
+            const res = await axios.get(`${API_BASE_URL}/user`, { withCredentials: true });
             return res.data.success ? res.data.data : [];
         },
         enabled: !!user,

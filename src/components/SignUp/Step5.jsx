@@ -6,6 +6,7 @@ import {
 } from "@stripe/react-stripe-js";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { API_BASE_URL } from '@/lib/api';
 
 export default function Step5({
   onSubmit,
@@ -46,7 +47,7 @@ export default function Step5({
       if (setupIntent && setupIntent.status === "succeeded") {
         // Attach card
         const res = await axios.post(
-          "http://localhost:8000/api/stripe/attach-card",
+          `${API_BASE_URL}/stripe/attach-card`,
           {
             userId,
             customerId,

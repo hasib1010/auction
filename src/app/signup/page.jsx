@@ -10,6 +10,7 @@ import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 
 import PaymentWrapper from "@/components/PaymentWrapper/paymentWrapper";
+import { API_BASE_URL } from '@/lib/api';
 
 export default function Page() {
   const router = useRouter();
@@ -175,7 +176,7 @@ export default function Page() {
           };
 
           const regResponse = await axios.post(
-            "http://localhost:8000/api/user/register",
+            `${API_BASE_URL}/user/register`,
             registrationPayload,
             { withCredentials: true }
           );
@@ -186,7 +187,7 @@ export default function Page() {
 
           // Step 5: Setup Stripe Intent
           const intentResponse = await axios.post(
-            "http://localhost:8000/api/stripe/setup-intent",
+            `${API_BASE_URL}/stripe/setup-intent`,
             { customerId },
             { withCredentials: true }
           );

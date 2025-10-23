@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '@/lib/api';
 
 export default function AuctionItemForm({ onSubmit, initialData = {}, isEditing = false }) {
   const [formData, setFormData] = useState({
@@ -31,7 +32,7 @@ export default function AuctionItemForm({ onSubmit, initialData = {}, isEditing 
 
   const fetchAuctions = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/auction', { withCredentials: true });
+      const res = await axios.get(`${API_BASE_URL}/auction`, { withCredentials: true });
       if (res.data.success) {
         setAuctions(res.data.data);
       }

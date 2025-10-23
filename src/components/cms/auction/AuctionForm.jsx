@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '@/lib/api';
 
 export default function AuctionForm({ onSubmit, initialData = {}, isEditing = false }) {
   const [formData, setFormData] = useState({
@@ -24,7 +25,7 @@ export default function AuctionForm({ onSubmit, initialData = {}, isEditing = fa
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/category', { withCredentials: true });
+      const res = await axios.get(`${API_BASE_URL}/category`, { withCredentials: true });
       if (res.data.success) {
         setCategories(res.data.data);
       }

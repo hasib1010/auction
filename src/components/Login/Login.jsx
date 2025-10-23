@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import { useUser } from '@/contexts/UserContext';
 import toast, { Toaster } from 'react-hot-toast';
+import { API_BASE_URL } from '@/lib/api';
 
 export default function Login() {
     const { setUser } = useUser();
@@ -32,7 +33,7 @@ export default function Login() {
         setLoading(true);
         setError('');
         try {
-            const res = await axios.post('http://localhost:8000/api/user/login', { email, password }, { withCredentials: true });
+            const res = await axios.post(`${API_BASE_URL}/user/login`, { email, password }, { withCredentials: true });
             const response = res.data;
             if (response.success) {
             const userData = response.data;

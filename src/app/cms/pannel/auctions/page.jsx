@@ -7,6 +7,7 @@ import { useUser } from '@/contexts/UserContext';
 import { Button } from '@/components/ui/button';
 import AuctionForm from '@/components/cms/auction/AuctionForm';
 import AuctionList from '@/components/cms/auction/AuctionList';
+import { API_BASE_URL } from '@/lib/api';
 
 export default function AuctionsPage() {
   const { user } = useUser();
@@ -17,14 +18,14 @@ export default function AuctionsPage() {
   const { data: auctions = [], isLoading: loading } = useQuery({
     queryKey: ['auctions'],
     queryFn: async () => {
-      const res = await axios.get('http://localhost:8000/api/auction', { withCredentials: true });
+      const res = await axios.get(`${API_BASE_URL}/auction`, { withCredentials: true });
       return res.data.success ? res.data.data : [];
     },
     enabled: !!user,
   });
 
   const createMutation = useMutation({
-    mutationFn: (auctionData) => axios.post('http://localhost:8000/api/auction', auctionData, { withCredentials: true }),
+    mutationFn: (auctionData) => axios.post(`${API_BASE_URL}/auction`, auctionData, { withCredentials: true }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['auctions'] });
       setShowForm(false);
@@ -32,7 +33,7 @@ export default function AuctionsPage() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => axios.put(`http://localhost:8000/api/auction/${id}`, data, { withCredentials: true }),
+    mutationFn: ({ id, data }) => axios.put(`${API_BASE_URL}/auction/${id}`, data, { withCredentials: true }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['auctions'] });
       setEditingAuction(null);
@@ -41,7 +42,7 @@ export default function AuctionsPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (auctionId) => axios.delete(`http://localhost:8000/api/auction/${auctionId}`, { withCredentials: true }),
+    mutationFn: (auctionId) => axios.delete(`${API_BASE_URL}/auction/${auctionId}`, { withCredentials: true }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['auctions'] });
     },

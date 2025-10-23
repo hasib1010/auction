@@ -6,6 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useUser } from '@/contexts/UserContext';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
+import { API_BASE_URL } from '@/lib/api';
 import {
   Home,
   Folder,
@@ -30,7 +31,7 @@ export default function CMSLayout({ children }) {
   const handleLogout = async () => {
     try {
       const res = await axios.post(
-        'http://localhost:8000/api/user/logout',
+        `${API_BASE_URL}/user/logout`,
         {},
         { withCredentials: true }
       );

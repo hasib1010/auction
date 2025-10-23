@@ -7,6 +7,7 @@ import { useUser } from '@/contexts/UserContext';
 import { Button } from '@/components/ui/button';
 import CategoryForm from '@/components/cms/category/CategoryForm';
 import CategoryList from '@/components/cms/category/CategoryList';
+import { API_BASE_URL } from '@/lib/api';
 
 export default function CategoriesPage() {
   const { user } = useUser();
@@ -17,14 +18,14 @@ export default function CategoriesPage() {
   const { data: categories = [], isLoading: loading } = useQuery({
     queryKey: ['categories'],
     queryFn: async () => {
-      const res = await axios.get('http://localhost:8000/api/category', { withCredentials: true });
+      const res = await axios.get(`${API_BASE_URL}/category`, { withCredentials: true });
       return res.data.success ? res.data.data : [];
     },
     enabled: !!user,
   });
 
   const createMutation = useMutation({
-    mutationFn: (categoryData) => axios.post('http://localhost:8000/api/category', categoryData, { withCredentials: true }),
+    mutationFn: (categoryData) => axios.post(`${API_BASE_URL}/category`, categoryData, { withCredentials: true }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
       setShowForm(false);
@@ -32,7 +33,7 @@ export default function CategoriesPage() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => axios.put(`http://localhost:8000/api/category/${id}`, data, { withCredentials: true }),
+    mutationFn: ({ id, data }) => axios.put(`${API_BASE_URL}/category/${id}`, data, { withCredentials: true }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
       setEditingCategory(null);
@@ -41,7 +42,7 @@ export default function CategoriesPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (categoryId) => axios.delete(`http://localhost:8000/api/category/${categoryId}`, { withCredentials: true }),
+    mutationFn: (categoryId) => axios.delete(`${API_BASE_URL}/category/${categoryId}`, { withCredentials: true }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
     },
