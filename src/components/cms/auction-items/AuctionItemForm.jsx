@@ -127,11 +127,7 @@ export default function AuctionItemForm({ onSubmit, initialData = {}, isEditing 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md space-y-4">
-      <h3 className="text-lg font-semibold mb-4">
-        {isEditing ? 'Edit Auction Item' : 'Create New Auction Item'}
-      </h3>
-
+    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg space-y-4">
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
           Item Name

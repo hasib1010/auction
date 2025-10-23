@@ -24,10 +24,7 @@ export default function CategoryForm({ onSubmit, initialData = {}, isEditing = f
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
-      <h3 className="text-lg font-semibold mb-4">
-        {isEditing ? 'Edit Category' : 'Create New Category'}
-      </h3>
+    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg">
       <div className="mb-4">
         <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
           Category Name

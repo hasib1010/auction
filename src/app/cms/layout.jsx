@@ -20,15 +20,6 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
 
 export default function CMSLayout({ children }) {
   const { user, setUser, fetchUser } = useUser();
@@ -91,7 +82,7 @@ export default function CMSLayout({ children }) {
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-gray-900 bg-opacity-20 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/30  z-40 lg:hidden"
           onClick={() => setMobileMenuOpen(false)}
         />
       )}
