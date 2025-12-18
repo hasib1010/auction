@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Step1({ formData, handleInputChange }) {
+export default function Step1({ formData, handleInputChange, errors }) {
   return (
     <div>
       <h2 className="text-xl font-semibold mb-6">
@@ -57,6 +57,7 @@ export default function Step1({ formData, handleInputChange }) {
           </div>
         </label>
       </div>
+      {errors.accountType && <p className="text-red-500 text-sm mt-2">{errors.accountType}</p>}
     </div>
   );
 }

@@ -1,74 +1,109 @@
-import React from "react";
+import React, { useState } from "react";
+import {
+  PaymentElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { API_BASE_URL } from '@/lib/api';
 
-export default function Step5({ formData, handleInputChange }) {
-    return (
-        <div>
-            <h2 className="text-xl font-semibold mb-6 pb-6 border-b border-[#e3e3e3]">Payment Details</h2>
-            <div className="space-y-4">
-                <div>
-                    <label htmlFor="cardHolderName" className="text-lg font-semibold text-[#0E0E0E] block mb-2">
-                        Card Holder Name
-                    </label>
-                    <input
-                        type="text"
-                        value={formData.cardHolderName}
-                        onChange={(e) => handleInputChange("cardHolderName", e.target.value)}
-                        className="w-full border border-[#E3E3E3] bg-[#F7F7F7] rounded p-2 focus:outline-none focus:ring-0"
-                    />
-                </div>
-                <div>
-                    <label htmlFor="cardNumber" className="text-lg font-semibold text-[#0E0E0E] block mb-2">
-                        Card Number
-                    </label>
-                    <input
-                        type="text"
-                        value={formData.cardNumber}
-                        onChange={(e) => handleInputChange("cardNumber", e.target.value)}
-                        className="w-full border border-[#E3E3E3] bg-[#F7F7F7] rounded p-2 focus:outline-none focus:ring-0"
-                    />
-                </div>
-                <div className="flex gap-2">
-                    <div>
-                        <label htmlFor="expiry" className="text-lg font-semibold text-[#0E0E0E] block mb-2">
-                            Expiry
-                        </label>
-                        <input
-                            type="text"
-                            placeholder="MM"
-                            value={formData.expiryMonth}
-                            onChange={(e) => handleInputChange("expiryMonth", e.target.value)}
-                            className="border border-[#E3E3E3] bg-[#F7F7F7] rounded p-2 focus:outline-none focus:ring-0 w-20"
-                        />
-                        <input
-                            type="text"
-                            placeholder="YY"
-                            value={formData.expiryYear}
-                            onChange={(e) => handleInputChange("expiryYear", e.target.value)}
-                            className="border border-[#E3E3E3] bg-[#F7F7F7] rounded p-2 focus:outline-none focus:ring-0 w-20"
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="CVC" className="text-lg font-semibold text-[#0E0E0E] block mb-2">
-                            CVC
-                        </label>
-                        <input
-                            type="text"
-                            value={formData.cvc}
-                            onChange={(e) => handleInputChange("cvc", e.target.value)}
-                            className="flex-1 border border-[#E3E3E3] bg-[#F7F7F7] rounded p-2 focus:outline-none focus:ring-0"
-                        />
-                    </div>
-                </div>
+export default function Step5({
+  onSubmit,
+  loading,
+  customerId,
+  userId,
+  clientSecret,
+}) {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [isProcessing, setIsProcessing] = useState(false);
 
-                <label className="flex items-center gap-2">
-                    <input
-                        type="checkbox"
-                        checked={formData.autoInvoice}
-                        onChange={(e) => handleInputChange("autoInvoice", e.target.checked)}
-                    />
-                    Auto Invoice Payment
-                </label>
-            </div>
-        </div>
-    );
+  console.log("Step5 props:", { clientSecret, customerId, userId, loading });
+
+  const handleCardSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!stripe || !elements) {
+      toast.error("Stripe not initialized");
+      return;
+    }
+
+    setIsProcessing(true);
+
+    try {
+      const { error, setupIntent } = await stripe.confirmSetup({
+        elements,
+        confirmParams: {
+          return_url: window.location.origin + "/signup",
+        },
+        redirect: "if_required",
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      if (setupIntent && setupIntent.status === "succeeded") {
+        // Attach card
+        const res = await axios.post(
+          `${API_BASE_URL}/stripe/attach-card`,
+          {
+            userId,
+            customerId,
+            paymentMethodId: setupIntent.payment_method,
+          },
+          { withCredentials: true }
+        );
+        console.log("Card attached:", res.data);
+        toast.success("Account created successfully!");
+        // Call the parent onSubmit to handle redirect
+        onSubmit();
+      } else {
+        throw new Error("Setup intent failed");
+      }
+    } catch (error) {
+      console.error("Card attachment error:", error);
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          "Card attachment failed"
+      );
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  return (
+    <div>
+      <h2 className="text-xl font-semibold mb-6 pb-6 border-b border-[#e3e3e3]">
+        Payment Details
+      </h2>
+      <div className="space-y-4">
+        {clientSecret ? (
+          <form onSubmit={handleCardSubmit}>
+            <PaymentElement
+              options={{
+                layout: "tabs",
+              }}
+            />
+            <button
+              type="submit"
+              disabled={!stripe || isProcessing}
+              className="w-full mt-4 px-6 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+            >
+              {isProcessing ? "Processing..." : "Complete Registration"}
+            </button>
+          </form>
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-gray-500">Loading payment form...</p>
+            <p className="text-sm text-gray-400 mt-2">
+              Please complete the previous steps first
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }

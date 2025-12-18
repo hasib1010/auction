@@ -1,3 +1,5 @@
+'use client';
+
 import Header from "@/components/Header";
 import MainContentCards from "@/components/MainContentCards";
 import ComingSoonSection from "@/components/ComingSoonSection";

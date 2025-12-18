@@ -5,6 +5,7 @@ import Header from '@/components/Header'
 import React from 'react'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation';
+import toast, { Toaster } from 'react-hot-toast';
 
 function Store() {
     const router = useRouter();
@@ -44,7 +45,7 @@ function Store() {
                     {/* Buttons */}
                     <div className="flex flex-col sm:flex-row gap-4">
                         <button
-                            onClick={() => alert('You will be notified!')}
+                            onClick={() => toast.success('You will be notified!')}
                             className="rounded-2xl bg-amber-600 py-2 px-5 shadow-md cursor-pointer hover:bg-amber-300 transition"
                         >
                             Notify Me
@@ -62,6 +63,7 @@ function Store() {
             </div>
 
             <div className=" "><Footer /></div>
+            <Toaster />
         </>
     )
 }
